@@ -34,22 +34,78 @@ header h1 {
 
 .match {
   background: #fff;
-  border-left: 6px solid #e60012;
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 2px solid #f0f0f0;
 }
 
 .match-title {
   font-weight: bold;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
+  color: #e60012;
+  text-align: center;
+  font-size: 15px;
 }
 
 .players {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.player {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.player-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
   margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.player-avatar.kobe {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.player-avatar.tashiro {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.player-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.player-name {
   font-weight: 600;
+  font-size: 13px;
+  color: #333;
+  line-height: 1.3;
+}
+
+.vs {
+  font-size: 24px;
+  font-weight: bold;
+  color: #e60012;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
 .controls {
@@ -59,14 +115,34 @@ header h1 {
 }
 
 select {
-  padding: 10px;
+  padding: 10px 12px;
   font-size: 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+select:hover {
+  border-color: #e60012;
+}
+
+select:focus {
+  outline: none;
+  border-color: #e60012;
+  box-shadow: 0 0 0 3px rgba(230, 0, 18, 0.1);
 }
 
 .summary {
-  margin-top: 8px;
+  margin-top: 12px;
+  padding: 8px 12px;
   font-size: 13px;
   color: #555;
+  background: #f8f8f8;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 500;
 }
 
 footer {
@@ -135,39 +211,64 @@ footer {
 
 <script>
 const matches = [
-  { no:15, k:"ラジャブアリ・シェイドゥラエフ", t:"朝倉未来" },
-  { no:14, k:"イルホム・ノジモフ", t:"ホベルト・サトシ・ソウザ" },
-  { no:13, k:"扇久保博正", t:"元谷友貴" },
-  { no:12, k:"井上直樹", t:"ダニー・サバテロ" },
-  { no:11, k:"RENA", t:"伊澤星花" },
-  { no:10, k:"サガール・ケラモフ", t:"クレベル・コイケ" },
-  { no:9, k:"安藤達也", t:"福田龍彌" },
-  { no:8, k:"新居すぐる", t:"秋元強真" },
-  { no:7, k:"久保優太", t:"カルシャガ・ダウトベック" },
-  { no:6, k:"神龍誠", t:"ヒロヤ" },
-  { no:5, k:"後藤丈治", t:"ホセ・トーレス" },
-  { no:4, k:"冨澤大智", t:"篠塚辰樹" },
-  { no:3, k:"雑賀ヤン坊達也", t:"ベイノア・イブラヒム" },
-  { no:2, k:"芦澤竜誠", t:"ジョリー" },
-  { no:1, k:"須田健律", t:"ヤマト・エンゾ・マキ" }
+  { no:15, k:"ラジャブアリ・シェイドゥラエフ", t:"朝倉未来", kImg:"", tImg:"" },
+  { no:14, k:"イルホム・ノジモフ", t:"ホベルト・サトシ・ソウザ", kImg:"", tImg:"" },
+  { no:13, k:"扇久保博正", t:"元谷友貴", kImg:"", tImg:"" },
+  { no:12, k:"井上直樹", t:"ダニー・サバテロ", kImg:"", tImg:"" },
+  { no:11, k:"RENA", t:"伊澤星花", kImg:"", tImg:"" },
+  { no:10, k:"サガール・ケラモフ", t:"クレベル・コイケ", kImg:"", tImg:"" },
+  { no:9, k:"安藤達也", t:"福田龍彌", kImg:"", tImg:"" },
+  { no:8, k:"新居すぐる", t:"秋元強真", kImg:"", tImg:"" },
+  { no:7, k:"久保優太", t:"カルシャガ・ダウトベック", kImg:"", tImg:"" },
+  { no:6, k:"神龍誠", t:"ヒロヤ", kImg:"", tImg:"" },
+  { no:5, k:"後藤丈治", t:"ホセ・トーレス", kImg:"", tImg:"" },
+  { no:4, k:"冨澤大智", t:"篠塚辰樹", kImg:"", tImg:"" },
+  { no:3, k:"雑賀ヤン坊達也", t:"ベイノア・イブラヒム", kImg:"", tImg:"" },
+  { no:2, k:"芦澤竜誠", t:"ジョリー", kImg:"", tImg:"" },
+  { no:1, k:"須田健律", t:"ヤマト・エンゾ・マキ", kImg:"", tImg:"" }
 ];
+
+// 選手名からイニシャルを取得
+function getInitials(name) {
+  const parts = name.split(/[・\s]+/);
+  if (parts.length >= 2) {
+    return parts[0].charAt(0) + parts[parts.length - 1].charAt(0);
+  }
+  return name.substring(0, 2);
+}
 
 const container = document.getElementById("matches");
 
 matches.forEach((m, i) => {
   const div = document.createElement("div");
   div.className = "match";
+
+  // 画像がある場合は画像を、ない場合はイニシャルを表示
+  const kobeAvatar = m.kImg
+    ? `<img src="${m.kImg}" alt="${m.k}" onerror="this.parentElement.innerHTML='${getInitials(m.k)}'">`
+    : getInitials(m.k);
+  const tashiroAvatar = m.tImg
+    ? `<img src="${m.tImg}" alt="${m.t}" onerror="this.parentElement.innerHTML='${getInitials(m.t)}'">`
+    : getInitials(m.t);
+
   div.innerHTML = `
-    <div class="match-title">第${m.no}試合 ${m.no >= 11 ? "（タイトル）" : ""}</div>
+    <div class="match-title">第${m.no}試合 ${m.no >= 11 ? "🏆 タイトル戦" : ""}</div>
     <div class="players">
-      <span>神戸：${m.k}</span>
-      <span>田代：${m.t}</span>
+      <div class="player">
+        <div class="player-avatar kobe">${kobeAvatar}</div>
+        <div class="player-name">神戸<br>${m.k}</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="player">
+        <div class="player-avatar tashiro">${tashiroAvatar}</div>
+        <div class="player-name">田代<br>${m.t}</div>
+      </div>
     </div>
     <div class="controls">
       <select class="winner">
         <option value="">勝者未入力</option>
-        <option value="k">神戸</option>
-        <option value="t">田代</option>
+        <option value="k">神戸（${m.k}）</option>
+        <option value="t">田代（${m.t}）</option>
       </select>
       <select class="method">
         <option value="">決まり手未入力</option>
