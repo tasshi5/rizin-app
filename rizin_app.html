@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RIZIN 予想対決</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background: #fff;
+    color: #333;
+    padding: 0;
+    min-height: 100vh;
+    padding-bottom: 120px;
+  }
+  .header {
+    background: linear-gradient(to bottom, #fff 0%, #f5f5f5 100%);
+    padding: 30px 20px;
+    border-bottom: 3px solid #E30613;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 48px;
+    color: #E30613;
+    font-weight: 900;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 4px rgba(227, 6, 19, 0.2);
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+  }
+  .rule {
+    font-size: 14px;
+    text-align: center;
+    padding: 15px;
+    background: rgba(227, 6, 19, 0.05);
+    border: 1px solid rgba(227, 6, 19, 0.2);
+    color: #333;
+    letter-spacing: 1px;
+  }
+  .content {
+    padding: 30px 20px;
+    background: #f9f9f9;
+  }
+  .match {
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-left: 5px solid #E30613;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  .match::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #E30613 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .match:hover {
+    border-color: #E30613;
+    box-shadow: 0 4px 16px rgba(227, 6, 19, 0.15);
+  }
+  .match:hover::before {
+    opacity: 1;
+  }
+  .match-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .match-number {
+    font-weight: 900;
+    font-size: 20px;
+    color: #E30613;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .title-badge {
+    background: #E30613;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+  .predictions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  .prediction {
+    background: #f5f5f5;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .prediction::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+  .prediction.kobe::after {
+    background: #00D4FF;
+  }
+  .prediction.tashiro::after {
+    background: #FFD700;
+  }
+  .prediction:hover {
+    border-color: #ccc;
+    background: #fff;
+  }
+  .prediction-label {
+    font-size: 11px;
+    opacity: 0.6;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #666;
+  }
+  .prediction-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: #333;
+  }
+  .input-group {
+    margin-bottom: 15px;
+  }
+  .input-label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 8px;
+    color: #666;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  select {
+    width: 100%;
+    padding: 12px 15px;
+    background: #fff;
+    color: #333;
+    border: 2px solid #e0e0e0;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+  }
+  select:hover {
+    border-color: #E30613;
+  }
+  select:focus {
+    outline: none;
+    border-color: #E30613;
+    box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.1);
+  }
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    background: rgba(227, 6, 19, 0.05);
+    border: 1px solid rgba(227, 6, 19, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .checkbox-group:hover {
+    background: rgba(227, 6, 19, 0.1);
+    border-color: rgba(227, 6, 19, 0.4);
+  }
+  .checkbox-group.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #E30613;
+  }
+  input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+  }
+  .score {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .score-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+  }
+  .score-value {
+    color: #E30613;
+    font-size: 18px;
+    font-weight: 900;
+  }
+  .total {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, #fff 0%, #f5f5f5 100%);
+    padding: 20px;
+    border-top: 3px solid #E30613;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  }
+  .total-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  .total-scores {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+  }
+  .total-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .total-label {
+    font-size: 13px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+  }
+  .total-value {
+    font-size: 36px;
+    font-weight: 900;
+    color: #E30613;
+    text-shadow: 0 2px 4px rgba(227, 6, 19, 0.2);
+    letter-spacing: 2px;
+  }
+  .difference {
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+    padding: 8px 20px;
+    background: rgba(227, 6, 19, 0.05);
+    border: 1px solid rgba(227, 6, 19, 0.2);
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+  .difference .winner {
+    color: #E30613;
+    font-weight: 900;
+  }
+  .difference .amount {
+    color: #E30613;
+    font-weight: 900;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="container">
+    <h1>RIZIN</h1>
+    <div class="subtitle">予想対決 スコアボード</div>
+    <div class="rule">
+      判定 500円 / KO・一本 1000円 / タイトルマッチ（11試合目以降）×2
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container">
+    <div id="matches"></div>
+  </div>
+</div>
+
+<div class="total">
+  <div class="total-content">
+    <div class="total-scores">
+      <div class="total-item">
+        <div class="total-label">神戸</div>
+        <div class="total-value"><span id="totalKobe">0</span> 円</div>
+      </div>
+      <div class="total-item">
+        <div class="total-label">田代</div>
+        <div class="total-value"><span id="totalTashiro">0</span> 円</div>
+      </div>
+    </div>
+    <div class="difference" id="difference">引き分け</div>
+  </div>
+</div>
+
+<script>
+const matches = [
+  {no:15, k:"ラジャブアリ・シェイドゥラエフ", t:"朝倉未来"},
+  {no:14, k:"イルホム・ノジモフ", t:"ホベルト・サトシ・ソウザ"},
+  {no:13, k:"扇久保博正", t:"元谷友貴"},
+  {no:12, k:"井上直樹", t:"ダニー・サバテロ"},
+  {no:11, k:"RENA", t:"伊澤星花"},
+  {no:10, k:"サガール・ケラモフ", t:"クレベル・コイケ"},
+  {no:8,  k:"安藤達也", t:"福田龍彌"},
+  {no:7,  k:"新居すぐる", t:"秋元強真"},
+  {no:6,  k:"久保優太", t:"カルシャガ・ダウトベック"},
+  {no:5,  k:"神龍誠", t:"ヒロヤ"},
+  {no:4,  k:"後藤丈治", t:"ホセ・トーレス"},
+  {no:3,  k:"冨澤大智", t:"篠塚辰樹"},
+  {no:2,  k:"雑賀ヤン坊達也", t:"ベイノア・イブラヒム"},
+  {no:1,  k:"芦澤竜誠", t:"ジョリー"},
+  {no:0,  k:"須田健律", t:"ヤマト・エンゾ・マキ"},
+];
+
+const container = document.getElementById("matches");
+
+matches.forEach((m,i)=>{
+  const div = document.createElement("div");
+  div.className = "match";
+  
+  // 11試合目以降かどうかをチェック
+  const isTitleEligible = m.no >= 11;
+  
+  div.innerHTML = `
+    <div class="match-header">
+      <div class="match-number">第${m.no}試合</div>
+      ${isTitleEligible ? '<div class="title-badge">TITLE ELIGIBLE</div>' : ''}
+    </div>
+    
+    <div class="predictions">
+      <div class="prediction kobe">
+        <div class="prediction-label">神戸 予想</div>
+        <div class="prediction-name">${m.k}</div>
+      </div>
+      <div class="prediction tashiro">
+        <div class="prediction-label">田代 予想</div>
+        <div class="prediction-name">${m.t}</div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">勝者</label>
+      <select id="winner${i}">
+        <option value="">未選択</option>
+        <option value="${m.k}">${m.k}</option>
+        <option value="${m.t}">${m.t}</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">勝ち方</label>
+      <select id="method${i}">
+        <option value="">未選択</option>
+        <option value="判定">判定</option>
+        <option value="KO">KO</option>
+        <option value="一本">一本</option>
+      </select>
+    </div>
+
+    ${isTitleEligible ? `
+    <label class="checkbox-group" id="titleLabel${i}">
+      <input type="checkbox" id="title${i}">
+      <span>タイトルマッチ（獲得ポイント2倍）</span>
+    </label>
+    ` : `<input type="checkbox" id="title${i}" style="display:none;">`}
+
+    <div class="score">
+      <div class="score-item">
+        <span>神戸：</span>
+        <span class="score-value"><span id="ks${i}">0</span> 円</span>
+      </div>
+      <div class="score-item">
+        <span>田代：</span>
+        <span class="score-value"><span id="ts${i}">0</span> 円</span>
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+
+  ["winner","method","title"].forEach(key=>{
+    document.getElementById(`${key}${i}`).addEventListener("change", calculate);
+  });
+});
+
+function calculate(){
+  let totalK = 0;
+  let totalT = 0;
+
+  matches.forEach((m,i)=>{
+    let base = 0;
+    const winner = document.getElementById(`winner${i}`).value;
+    const method = document.getElementById(`method${i}`).value;
+    const isTitle = document.getElementById(`title${i}`).checked;
+
+    if(method==="判定") base = 500;
+    if(method==="KO" || method==="一本") base = 1000;
+    
+    // 11試合目以降のみタイトルマッチ2倍適用
+    if(isTitle && m.no >= 11) base *= 2;
+
+    let ks = 0, ts = 0;
+    if(winner === m.k) ks = base;
+    if(winner === m.t) ts = base;
+
+    document.getElementById(`ks${i}`).textContent = ks;
+    document.getElementById(`ts${i}`).textContent = ts;
+
+    totalK += ks;
+    totalT += ts;
+  });
+
+  document.getElementById("totalKobe").textContent = totalK;
+  document.getElementById("totalTashiro").textContent = totalT;
+  
+  // 差額を計算して表示
+  const diff = Math.abs(totalK - totalT);
+  const diffElement = document.getElementById("difference");
+  
+  if (totalK > totalT) {
+    diffElement.innerHTML = `<span class="winner">神戸</span> が <span class="amount">${diff.toLocaleString()}円</span> リード`;
+  } else if (totalT > totalK) {
+    diffElement.innerHTML = `<span class="winner">田代</span> が <span class="amount">${diff.toLocaleString()}円</span> リード`;
+  } else {
+    diffElement.textContent = "引き分け";
+  }
+}
+</script>
+
+</body>
+</html>
