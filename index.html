@@ -7,11 +7,10 @@
 
 <style>
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+  font-family: sans-serif;
   margin: 0;
   background: #fafafa;
-  color: #333;
-  padding-bottom: 160px;
+  padding-bottom: 140px;
 }
 
 header {
@@ -21,15 +20,9 @@ header {
 }
 
 header h1 {
-  margin: 0;
   color: #e60012;
+  margin: 0;
   letter-spacing: 6px;
-}
-
-header p {
-  margin-top: 8px;
-  font-size: 14px;
-  opacity: 0.8;
 }
 
 main {
@@ -43,36 +36,21 @@ main {
   border-left: 6px solid #e60012;
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.match h3 {
-  margin: 0 0 12px;
-}
-
-.predictions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.players {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 12px;
 }
 
-.pred {
-  background: #f3f3f3;
-  padding: 10px;
-  font-size: 14px;
+.player {
+  font-weight: bold;
 }
 
-label {
-  display: block;
-  font-size: 12px;
-  margin-bottom: 4px;
-}
-
-select {
+.result-input select {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 8px;
+  padding: 10px;
 }
 
 footer {
@@ -88,35 +66,13 @@ footer {
 .summary {
   max-width: 900px;
   margin: 0 auto;
-}
-
-.scores {
-  display: flex;
-  justify-content: space-between;
-  font-size: 20px;
-  font-weight: bold;
-  color: #e60012;
-}
-
-.result {
-  margin: 8px 0;
   text-align: center;
-  padding: 6px;
-  background: #fff5f5;
-  border: 1px solid #f3b0b0;
 }
 
 .rates {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
   font-size: 12px;
-}
-
-.rate {
-  background: #f3f3f3;
-  padding: 4px 8px;
-  border-radius: 12px;
+  margin-top: 6px;
+  color: #555;
 }
 </style>
 </head>
@@ -125,93 +81,45 @@ footer {
 
 <header>
   <h1>RIZIN</h1>
-  <p>判定500円 / KO・一本1000円 / タイトル×2</p>
+  <p>予想対決</p>
 </header>
 
 <main id="matches"></main>
 
 <footer>
   <div class="summary">
-    <div class="scores">
-      <div>神戸：<span id="totalK">0</span>円</div>
-      <div>田代：<span id="totalT">0</span>円</div>
-    </div>
-    <div class="result" id="diff">引き分け</div>
+    <div>神戸 0円 / 田代 0円</div>
     <div class="rates">
-      <div class="rate">全体：<span id="rateAll">0</span>%</div>
-      <div class="rate">神戸：<span id="rateK">0</span>%</div>
-      <div class="rate">田代：<span id="rateT">0</span>%</div>
+      全体：0% / 神戸：0% / 田代：0%
     </div>
   </div>
 </footer>
 
 <script>
 const matches = [
-  { no: 15, k: "ラジャブアリ・シェイドゥラエフ", t: "朝倉未来", title: true },
-  { no: 14, k: "イルホム・ノジモフ", t: "ホベルト・サトシ・ソウザ", title: true },
-  { no: 13, k: "扇久保博正", t: "元谷友貴", title: true }
+  { k: "選手A", t: "選手B" },
+  { k: "選手C", t: "選手D" }
 ];
 
 const container = document.getElementById("matches");
 
-matches.forEach((m, i) => {
+matches.forEach(m => {
   container.innerHTML += `
-  <div class="match">
-    <h3>第${m.no}試合 ${m.title ? "（タイトル）" : ""}</h3>
-    <div class="predictions">
-      <div class="pred">神戸：${m.k}</div>
-      <div class="pred">田代：${m.t}</div>
+    <div class="match">
+      <div class="players">
+        <div class="player">神戸：${m.k}</div>
+        <div class="player">田代：${m.t}</div>
+      </div>
+      <div class="result-input">
+        <select>
+          <option>結果未入力</option>
+          <option>神戸 勝ち</option>
+          <option>田代 勝ち</option>
+        </select>
+      </div>
     </div>
-
-    <label>勝者</label>
-    <select id="winner${i}">
-      <option value="">未選択</option>
-      <option value="k">神戸</option>
-      <option value="t">田代</option>
-    </select>
-
-    <label>勝ち方</label>
-    <select id="method${i}">
-      <option value="">未選択</option>
-      <option value="500">判定</option>
-      <option value="1000">KO / 一本</option>
-    </select>
-  </div>
   `;
 });
-
-document.addEventListener("change", calc);
-
-function calc() {
-  let totalK = 0, totalT = 0;
-  let hitK = 0, hitT = 0, decided = 0;
-
-  matches.forEach((m, i) => {
-    const w = document.getElementById(`winner${i}`).value;
-    const mtd = Number(document.getElementById(`method${i}`).value);
-    if (!w || !mtd) return;
-
-    decided++;
-    let point = mtd * (m.title ? 2 : 1);
-
-    if (w === "k") { totalK += point; hitK++; }
-    if (w === "t") { totalT += point; hitT++; }
-  });
-
-  document.getElementById("totalK").textContent = totalK;
-  document.getElementById("totalT").textContent = totalT;
-
-  document.getElementById("diff").textContent =
-    totalK === totalT ? "引き分け" :
-    totalK > totalT ? "神戸リード" : "田代リード";
-
-  document.getElementById("rateAll").textContent =
-    decided ? Math.round(((hitK + hitT) / (decided * 2)) * 100) : 0;
-  document.getElementById("rateK").textContent =
-    decided ? Math.round((hitK / decided) * 100) : 0;
-  document.getElementById("rateT").textContent =
-    decided ? Math.round((hitT / decided) * 100) : 0;
-}
 </script>
 
 </body>
