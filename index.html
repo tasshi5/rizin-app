@@ -589,6 +589,52 @@ function calculate(){
   }
 })();
 </script>
+<script>
+(function () {
+  const STORAGE_KEY = 'rizin_results';
+
+  function safeParseJSON(value) {
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const raw = localStorage.getItem(STORAGE_KEY);
+  const results = safeParseJSON(raw || '[]');
+
+  const total = results.length;
+  const wins = results.filter(r =>
+    r?.win === true ||
+    r?.isWin === true ||
+    r?.result === 'win'
+  ).length;
+
+  const rate = total === 0 ? 0 : Math.round((wins / total) * 100);
+
+  // ===== 強制表示（画面右下・固定）=====
+  const box = document.createElement('div');
+  box.id = 'win-rate-box';
+  box.style.position = 'fixed';
+  box.style.right = '16px';
+  box.style.bottom = '16px';
+  box.style.background = '#fff';
+  box.style.border = '2px solid #E30613';
+  box.style.padding = '10px 14px';
+  box.style.borderRadius = '8px';
+  box.style.fontWeight = 'bold';
+  box.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+  box.style.zIndex = '9999';
+  box.innerHTML = `
+    勝率 / 的中率： 
+    <span style="color:#E30613">${rate}%</span>
+    <div style="font-size:12px; margin-top:4px;">（${wins} / ${total} 件）</div>
+  `;
+
+  document.body.appendChild(box);
+})();
+</script>
 
 </body>
 </html>
