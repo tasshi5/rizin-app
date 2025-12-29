@@ -6,15 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ===== 基本 ===== */
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: system-ui, sans-serif;
   background: #fafafa;
   color: #333;
-
-  /* ★ ここが超重要：固定フッター分を必ず確保 */
-  padding-bottom: 220px;
+  padding-bottom: 240px; /* ★固定フッター対策 */
 }
 
 header {
@@ -29,12 +26,6 @@ header h1 {
   letter-spacing: 6px;
 }
 
-header p {
-  margin-top: 8px;
-  color: #666;
-}
-
-/* ===== メイン ===== */
 .container {
   max-width: 900px;
   margin: 0 auto;
@@ -61,13 +52,17 @@ header p {
   font-weight: 600;
 }
 
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
 select {
-  width: 100%;
   padding: 10px;
   font-size: 14px;
 }
 
-/* ===== フッター ===== */
 footer {
   position: fixed;
   left: 0;
@@ -113,7 +108,6 @@ footer {
   <p>予想対決</p>
 </header>
 
-<!-- ★ 試合はここに全部出る -->
 <div class="container" id="matches"></div>
 
 <footer>
@@ -136,21 +130,21 @@ footer {
 <script>
 /* ===== 試合データ ===== */
 const matches = [
-  { no: 15, k: "ラジャブアリ・シェイドゥラエフ", t: "朝倉未来" },
-  { no: 14, k: "イルホム・ノジモフ", t: "ホベルト・サトシ・ソウザ" },
-  { no: 13, k: "扇久保博正", t: "元谷友貴" },
-  { no: 12, k: "井上直樹", t: "ダニー・サバテロ" },
-  { no: 11, k: "RENA", t: "伊澤星花" },
-  { no: 10, k: "サガール・ケラモフ", t: "クレベル・コイケ" },
-  { no: 9,  k: "安藤達也", t: "福田龍彌" },
-  { no: 8,  k: "新居すぐる", t: "秋元強真" },
-  { no: 7,  k: "久保優太", t: "カルシャガ・ダウトベック" },
-  { no: 6,  k: "神龍誠", t: "ヒロヤ" },
-  { no: 5,  k: "後藤丈治", t: "ホセ・トーレス" },
-  { no: 4,  k: "冨澤大智", t: "篠塚辰樹" },
-  { no: 3,  k: "雑賀ヤン坊達也", t: "ベイノア・イブラヒム" },
-  { no: 2,  k: "芦澤竜誠", t: "ジョリー" },
-  { no: 1,  k: "須田健律", t: "ヤマト・エンゾ・マキ" }
+  { no:15, k:"ラジャブアリ・シェイドゥラエフ", t:"朝倉未来" },
+  { no:14, k:"イルホム・ノジモフ", t:"ホベルト・サトシ・ソウザ" },
+  { no:13, k:"扇久保博正", t:"元谷友貴" },
+  { no:12, k:"井上直樹", t:"ダニー・サバテロ" },
+  { no:11, k:"RENA", t:"伊澤星花" },
+  { no:10, k:"サガール・ケラモフ", t:"クレベル・コイケ" },
+  { no:9,  k:"安藤達也", t:"福田龍彌" },
+  { no:8,  k:"新居すぐる", t:"秋元強真" },
+  { no:7,  k:"久保優太", t:"カルシャガ・ダウトベック" },
+  { no:6,  k:"神龍誠", t:"ヒロヤ" },
+  { no:5,  k:"後藤丈治", t:"ホセ・トーレス" },
+  { no:4,  k:"冨澤大智", t:"篠塚辰樹" },
+  { no:3,  k:"雑賀ヤン坊達也", t:"ベイノア・イブラヒム" },
+  { no:2,  k:"芦澤竜誠", t:"ジョリー" },
+  { no:1,  k:"須田健律", t:"ヤマト・エンゾ・マキ" }
 ];
 
 const container = document.getElementById("matches");
@@ -160,45 +154,63 @@ matches.forEach((m, i) => {
   const div = document.createElement("div");
   div.className = "match";
   div.innerHTML = `
-    <div class="match-title">第${m.no}試合</div>
+    <div class="match-title">第${m.no}試合 ${m.no >= 11 ? "（タイトル）" : ""}</div>
     <div class="players">
       <span>神戸：${m.k}</span>
       <span>田代：${m.t}</span>
     </div>
-    <select>
-      <option value="">結果未入力</option>
-      <option value="k">神戸 的中</option>
-      <option value="t">田代 的中</option>
-    </select>
+    <div class="controls">
+      <select class="winner">
+        <option value="">勝者未入力</option>
+        <option value="k">神戸</option>
+        <option value="t">田代</option>
+      </select>
+      <select class="method">
+        <option value="">決まり手未入力</option>
+        <option value="judge">判定</option>
+        <option value="finish">KO / 一本</option>
+      </select>
+    </div>
   `;
   container.appendChild(div);
 });
 
-document.querySelectorAll("select").forEach(sel => {
-  sel.addEventListener("change", calculate);
-});
+document.querySelectorAll("select").forEach(s =>
+  s.addEventListener("change", calculate)
+);
 
-/* ===== 計算 ===== */
+/* ===== 集計 ===== */
 function calculate() {
-  let k = 0, t = 0, d = 0;
+  let kScore = 0, tScore = 0;
+  let decided = 0, kHit = 0, tHit = 0;
 
-  document.querySelectorAll("select").forEach(sel => {
-    if (sel.value) {
-      d++;
-      if (sel.value === "k") k++;
-      if (sel.value === "t") t++;
-    }
+  document.querySelectorAll(".match").forEach((m, i) => {
+    const winner = m.querySelector(".winner").value;
+    const method = m.querySelector(".method").value;
+    if (!winner || !method) return;
+
+    decided++;
+
+    let base = method === "judge" ? 500 : 1000;
+    if (matches[i].no >= 11) base *= 2;
+
+    if (winner === "k") { kScore += base; kHit++; }
+    if (winner === "t") { tScore += base; tHit++; }
   });
 
-  document.getElementById("kobeScore").textContent = k * 500;
-  document.getElementById("tashiroScore").textContent = t * 500;
+  document.getElementById("kobeScore").textContent = kScore;
+  document.getElementById("tashiroScore").textContent = tScore;
 
   document.getElementById("winnerText").textContent =
-    k > t ? "神戸 リード" : t > k ? "田代 リード" : "引き分け";
+    kScore > tScore ? "神戸 リード" :
+    tScore > kScore ? "田代 リード" : "引き分け";
 
-  document.getElementById("allRate").textContent = d ? Math.round((k + t) / (d * 2) * 100) : 0;
-  document.getElementById("kobeRate").textContent = d ? Math.round(k / d * 100) : 0;
-  document.getElementById("tashiroRate").textContent = d ? Math.round(t / d * 100) : 0;
+  document.getElementById("allRate").textContent =
+    decided ? Math.round((kHit + tHit) / (decided * 2) * 100) : 0;
+  document.getElementById("kobeRate").textContent =
+    decided ? Math.round(kHit / decided * 100) : 0;
+  document.getElementById("tashiroRate").textContent =
+    decided ? Math.round(tHit / decided * 100) : 0;
 }
 </script>
 
