@@ -521,6 +521,74 @@ function calculate(){
 
   render();
 </script>
+<script>
+(function () {
+  // ===== 設定 =====
+  const STORAGE_KEY = 'rizin_results';
+
+  // 表示を差し込む基準（合計収支の近くに入れる）
+  // 既存の合計収支表示の要素ID/クラスがある場合は、ここを合わせてください
+  // 見つからなければ body の最後に追加します
+  const INSERT_AFTER_SELECTOR = '#total-profit, .total-profit';
+
+  function safeParseJSON(value) {
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function calcWinRate(results) {
+    const total = results.length;
+    if (!total) return 0;
+
+    // 勝ち判定：
+    // 既存データに合わせて、以下のどれかで true を拾う設計
+    // - result.win === true
+    // - result.result === 'win'
+    // - result.isWin === true
+    const wins = results.filter(r =>
+      r?.win === true ||
+      r?.isWin === true ||
+      r?.result === 'win'
+    ).length;
+
+    return Math.round((wins / total) * 100);
+  }
+
+  function renderWinRate(rate, total) {
+    const el = document.createElement('div');
+    el.id = 'win-rate-box';
+    el.style.marginTop = '8px';
+    el.style.fontWeight = 'bold';
+    el.style.color = '#333';
+    el.innerHTML = `勝率 / 的中率： <span style="color:#E30613">${rate}%</span>（${total}件）`;
+    return el;
+  }
+
+  function insertAfterTarget(node) {
+    const target = document.querySelector(INSERT_AFTER_SELECTOR);
+    if (target && target.parentNode) {
+      target.parentNode.insertBefore(node, target.nextSibling);
+    } else {
+      document.body.appendChild(node);
+    }
+  }
+
+  // ===== 実行 =====
+  const raw = localStorage.getItem(STORAGE_KEY);
+  const results = Array.isArray(raw) ? raw : safeParseJSON(raw || '[]');
+
+  const total = results.length;
+  const rate = calcWinRate(results);
+
+  // 既に表示があれば二重に出さない
+  if (!document.getElementById('win-rate-box')) {
+    insertAfterTarget(renderWinRate(rate, total));
+  }
+})();
+</script>
 
 </body>
 </html>
