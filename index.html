@@ -466,6 +466,61 @@ function calculate(){
   }
 }
 </script>
+ 
+<section style="max-width:600px;margin:40px auto;padding:20px;border-top:2px solid #eee;">
+  <h2 style="margin-bottom:12px;">結果入力</h2>
+
+  <div style="display:flex;gap:10px;margin-bottom:10px;">
+    <select id="result">
+      <option value="win">勝ち</option>
+      <option value="lose">負け</option>
+    </select>
+
+    <select id="bet">
+      <option value="500">500円</option>
+      <option value="1000">1000円</option>
+    </select>
+
+    <button onclick="addResult()">追加</button>
+  </div>
+
+  <h3>合計収支：<span id="total">0</span> 円</h3>
+
+  <ul id="history"></ul>
+</section>
+
+<script>
+  const STORAGE_KEY = "rizin_results";
+  let results = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+  function render() {
+    const history = document.getElementById("history");
+    const totalEl = document.getElementById("total");
+    history.innerHTML = "";
+
+    let total = 0;
+    results.forEach((r, i) => {
+      total += r.amount;
+      const li = document.createElement("li");
+      li.textContent = `${i + 1}. ${r.result === "win" ? "勝ち" : "負け"} / ${r.bet}円 → ${r.amount > 0 ? "+" : ""}${r.amount}円`;
+      history.appendChild(li);
+    });
+
+    totalEl.textContent = total;
+  }
+
+  function addResult() {
+    const result = document.getElementById("result").value;
+    const bet = Number(document.getElementById("bet").value);
+    const amount = result === "win" ? bet : -bet;
+
+    results.push({ result, bet, amount });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
+    render();
+  }
+
+  render();
+</script>
 
 </body>
 </html>
