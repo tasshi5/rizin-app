@@ -60,15 +60,27 @@ select{
   margin-top:10px;padding:8px 16px;background:#fff5f5;border:1px solid #f0caca;
 }
 
-/* ===== 的中率（下・控えめ） ===== */
+/* ===== 的中率（横並び） ===== */
 .hit-rate-wrapper{
-  max-width:600px;margin:40px auto 80px;padding-top:16px;
-  border-top:1px dashed #ddd;text-align:center;
+  max-width:800px;
+  margin:40px auto 80px;
+  padding-top:16px;
+  border-top:1px dashed #ddd;
+  text-align:center;
+}
+.hit-rate-container{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  flex-wrap:wrap;
 }
 .hit-rate{
-  font-size:13px;color:#666;margin:6px 0;
-  background:#fafafa;padding:6px 10px;border-radius:4px;
-  display:inline-block;
+  font-size:13px;
+  color:#666;
+  background:#fafafa;
+  padding:8px 16px;
+  border-radius:4px;
+  white-space:nowrap;
 }
 </style>
 </head>
@@ -105,11 +117,13 @@ select{
   </div>
 </div>
 
-<!-- ===== 的中率（最下部） ===== -->
+<!-- ===== 的中率（横並び） ===== -->
 <div class="hit-rate-wrapper">
-  <div id="hitRateAll" class="hit-rate">全体 的中率：0%</div>
-  <div id="hitRateKobe" class="hit-rate">神戸 的中率：0%</div>
-  <div id="hitRateTashiro" class="hit-rate">田代 的中率：0%</div>
+  <div class="hit-rate-container">
+    <div id="hitRateAll" class="hit-rate">全体 的中率：0%</div>
+    <div id="hitRateKobe" class="hit-rate">神戸 的中率：0%</div>
+    <div id="hitRateTashiro" class="hit-rate">田代 的中率：0%</div>
+  </div>
 </div>
 
 <script>
