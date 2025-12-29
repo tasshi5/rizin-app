@@ -2,218 +2,533 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<title>RIZIN 2025 年末 予想対決</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Yogibo presents RIZIN師走の超強者祭り | 予想対決</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial;
-  background: #fff;
-  color: #222;
-}
-header {
-  text-align: center;
-  padding: 40px 20px 20px;
-}
-header h1 {
-  color: #e60012;
-  font-size: 42px;
-  letter-spacing: 6px;
-  margin: 0;
-}
-header p {
-  margin-top: 8px;
-  color: #555;
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Helvetica Neue',Arial,'Hiragino Sans','Hiragino Kaku Gothic ProN',sans-serif;
+  background:#ffffff;
+  color:#333;min-height:100vh;padding-bottom:260px;
 }
 
-.rule {
-  margin: 20px auto;
-  max-width: 900px;
-  padding: 12px;
-  border: 1px solid #f2caca;
-  background: #fff5f5;
-  text-align: center;
-  font-size: 14px;
+.header{
+  padding:40px 20px 30px;
+  background:linear-gradient(135deg,#E30613 0%,#8B0000 100%);
+  box-shadow:0 4px 20px rgba(227,6,19,0.3);
+  position:relative;
+  overflow:hidden;
+}
+.header::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/></svg>');
+  opacity:0.3;
+}
+.container{max-width:1000px;margin:0 auto;position:relative;z-index:1;}
+h1{
+  text-align:center;color:#fff;font-size:56px;font-weight:900;letter-spacing:8px;
+  text-shadow:0 4px 10px rgba(0,0,0,0.5);
+  animation:glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow{
+  from{text-shadow:0 0 10px rgba(255,255,255,0.5),0 0 20px rgba(227,6,19,0.5);}
+  to{text-shadow:0 0 20px rgba(255,255,255,0.8),0 0 40px rgba(227,6,19,0.8);}
+}
+.subtitle{
+  text-align:center;color:#ffcccc;margin-top:10px;font-size:16px;
+  letter-spacing:3px;font-weight:300;
+}
+.event-title{
+  text-align:center;color:#fff;margin-top:12px;font-size:14px;
+  font-weight:600;letter-spacing:2px;
+}
+.event-date{
+  text-align:center;color:#FFD700;margin-top:6px;font-size:18px;
+  font-weight:700;letter-spacing:2px;
+}
+.rule{
+  margin-top:16px;padding:12px;text-align:center;
+  background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.2);font-size:13px;
+  border-radius:6px;color:#fff;line-height:1.6;
+}
+.content{padding:30px 20px;background:#f9f9f9;}
+.match{
+  background:#ffffff;
+  border:2px solid #e0e0e0;border-left:6px solid #E30613;
+  padding:28px;margin-bottom:24px;border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  transition:transform 0.3s,box-shadow 0.3s;
+  position:relative;
+  overflow:hidden;
+}
+.match::before{
+  content:'';position:absolute;top:-50%;right:-50%;
+  width:200%;height:200%;
+  background:radial-gradient(circle,rgba(227,6,19,0.05) 0%,transparent 70%);
+  animation:pulse 4s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:0.3;}
+  50%{transform:scale(1.2);opacity:0.6;}
+}
+.match:hover{
+  transform:translateY(-4px);
+  box-shadow:0 8px 24px rgba(227,6,19,0.2);
+}
+.match-header{
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:2px solid #e0e0e0;padding-bottom:14px;margin-bottom:20px;
+  position:relative;z-index:1;
+}
+.match-number{
+  font-weight:900;color:#E30613;font-size:18px;
+  text-shadow:0 2px 4px rgba(227,6,19,0.2);
+  letter-spacing:2px;
+}
+.title-badge{
+  background:linear-gradient(135deg,#E30613 0%,#FFD700 100%);
+  color:#000;font-size:11px;padding:6px 12px;border-radius:20px;
+  font-weight:900;letter-spacing:2px;
+  box-shadow:0 4px 12px rgba(255,215,0,0.4);
+  animation:shimmer 2s ease-in-out infinite;
+}
+@keyframes shimmer{
+  0%,100%{box-shadow:0 4px 12px rgba(255,215,0,0.4);}
+  50%{box-shadow:0 4px 20px rgba(255,215,0,0.8);}
+}
+.weight-class{
+  font-size:11px;color:#999;margin-top:4px;
+  letter-spacing:1px;
+}
+.predictions{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;
+  position:relative;z-index:1;
+}
+.prediction{
+  background:linear-gradient(135deg,#fafafa 0%,#f5f5f5 100%);
+  padding:18px;border:2px solid #e0e0e0;border-radius:10px;
+  position:relative;transition:all 0.3s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+.prediction::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  border-radius:10px;opacity:0;transition:opacity 0.3s;
+}
+.prediction.kobe{border-left:5px solid #00D4FF;}
+.prediction.kobe::before{background:linear-gradient(135deg,rgba(0,212,255,0.15) 0%,rgba(0,212,255,0.05) 100%);}
+.prediction.tashiro{border-left:5px solid #FFD700;}
+.prediction.tashiro::before{background:linear-gradient(135deg,rgba(255,215,0,0.15) 0%,rgba(255,215,0,0.05) 100%);}
+.prediction.winner{
+  transform:scale(1.05);
+  border-width:3px;
+  box-shadow:0 0 30px rgba(255,215,0,0.4);
+  background:#fffef5;
+}
+.prediction.winner::before{opacity:1;}
+
+/* 選手アイコン - 実際の画像表示 */
+.fighter-icon{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  border:3px solid #fff;
+  position:relative;
+  overflow:hidden;
+  background:#f0f0f0;
+}
+.fighter-icon img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+}
+.fighter-icon.kobe{
+  border-color:#00D4FF;
+  box-shadow:0 4px 16px rgba(0,212,255,0.4);
+}
+.fighter-icon.tashiro{
+  border-color:#FFD700;
+  box-shadow:0 4px 16px rgba(255,215,0,0.4);
 }
 
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
+.prediction-label{
+  font-size:10px;color:#999;margin-bottom:6px;
+  text-transform:uppercase;letter-spacing:1px;font-weight:600;
+}
+.prediction-name{
+  color:#333;font-size:14px;font-weight:700;
+  line-height:1.3;
+}
+.vs-divider{
+  position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);
+  width:36px;height:36px;background:#E30613;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;color:#fff;font-size:12px;z-index:2;
+  box-shadow:0 4px 12px rgba(227,6,19,0.4);
+}
+.input-group{margin-bottom:14px;position:relative;z-index:1;}
+select{
+  width:100%;padding:12px;border:2px solid #ddd;font-size:14px;
+  background:#fff;color:#333;border-radius:8px;
+  transition:border-color 0.3s;font-weight:600;
+  cursor:pointer;
+}
+select:focus{
+  outline:none;border-color:#E30613;
+  box-shadow:0 0 12px rgba(227,6,19,0.2);
+}
+select option{background:#fff;color:#333;}
+
+/* 結果表示エリア */
+.result-display{
+  margin:16px 0;padding:14px;
+  background:linear-gradient(135deg,#e6f3ff 0%,#d9ebff 100%);
+  border:2px solid #4A90E2;border-radius:10px;
+  position:relative;z-index:1;
+  box-shadow:0 4px 16px rgba(74,144,226,0.15);
+}
+.result-display.hidden{display:none;}
+.result-item{
+  display:flex;justify-content:space-between;align-items:center;margin:6px 0;
+}
+.result-label{
+  font-weight:700;color:#4A90E2;letter-spacing:1px;
+  text-transform:uppercase;font-size:12px;
+}
+.result-value{
+  color:#E30613;font-weight:900;font-size:16px;
 }
 
-.match {
-  border-left: 5px solid #e60012;
-  border: 1px solid #ddd;
-  margin-bottom: 18px;
-  padding: 16px;
+.score{
+  display:flex;justify-content:space-between;border-top:2px solid #e0e0e0;
+  padding-top:12px;position:relative;z-index:1;margin-top:8px;
 }
-
-.match h3 {
-  margin: 0 0 10px;
-  color: #e60012;
+.score div{
+  font-size:15px;font-weight:600;color:#666;
 }
+.score-value{font-weight:900;color:#E30613;font-size:18px;}
 
-.players {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-weight: bold;
+/* スコアボード（画面下部固定・白背景） */
+.scoreboard{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#ffffff;
+  border-top:4px solid #E30613;
+  padding:20px 20px 24px;
+  box-shadow:0 -8px 32px rgba(0,0,0,0.15);
+  z-index:1000;
 }
-
-.controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.scoreboard-content{
+  max-width:1000px;
+  margin:0 auto;
+  text-align:center;
 }
-
-select {
-  padding: 10px;
-  font-size: 14px;
+.scoreboard-scores{
+  display:flex;
+  justify-content:center;
+  gap:80px;
+  margin-bottom:14px;
 }
-
-footer {
-  position: sticky;
-  bottom: 0;
-  background: #fff;
-  border-top: 3px solid #e60012;
-  padding: 16px;
+.scoreboard-score-item{
+  position:relative;
+  padding:14px 28px;
+  background:linear-gradient(135deg,#f9f9f9 0%,#f0f0f0 100%);
+  border-radius:14px;
+  border:3px solid #e0e0e0;
+  box-shadow:0 4px 16px rgba(0,0,0,0.08);
+  transition:transform 0.3s;
 }
-
-.summary {
-  max-width: 900px;
-  margin: 0 auto;
+.scoreboard-score-item:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.12);
 }
-
-.summary-top {
-  display: flex;
-  justify-content: space-between;
-  font-size: 20px;
-  font-weight: bold;
+.scoreboard-score-item:first-child{
+  border-color:#00D4FF;
 }
-
-.result {
-  margin-top: 8px;
-  text-align: center;
-  padding: 10px;
-  background: #fff5f5;
-  border: 1px solid #f2caca;
+.scoreboard-score-item:last-child{
+  border-color:#FFD700;
 }
-
-.hit-rate {
-  margin-top: 10px;
-  text-align: center;
-  font-size: 13px;
-  color: #444;
+.scoreboard-label{
+  color:#666;
+  font-size:13px;
+  margin-bottom:6px;
+  letter-spacing:2px;
+  font-weight:700;
+  text-transform:uppercase;
+}
+.scoreboard-value{
+  font-size:38px;
+  font-weight:900;
+  background:linear-gradient(135deg,#E30613 0%,#FF6B6B 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.scoreboard-difference{
+  margin-bottom:14px;
+  padding:8px 20px;
+  background:linear-gradient(135deg,#E30613 0%,#8B0000 100%);
+  border:none;
+  border-radius:20px;
+  display:inline-block;
+  font-weight:700;
+  letter-spacing:2px;
+  color:#fff;
+  text-transform:uppercase;
+  box-shadow:0 4px 16px rgba(227,6,19,0.3);
+  font-size:14px;
+}
+.scoreboard-hit-rate-wrapper{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.scoreboard-hit-rate{
+  font-size:12px;
+  color:#333;
+  background:#f5f5f5;
+  padding:7px 16px;
+  border-radius:18px;
+  white-space:nowrap;
+  border:2px solid #e0e0e0;
+  font-weight:700;
+  letter-spacing:1px;
+}
+.scoreboard-hit-rate:first-child{
+  background:linear-gradient(135deg,#e6f7ff 0%,#d9f0ff 100%);
+  border-color:#00D4FF;
+  color:#0088CC;
+}
+.scoreboard-hit-rate:last-child{
+  background:linear-gradient(135deg,#fffaed 0%,#fff4d9 100%);
+  border-color:#FFD700;
+  color:#CC8800;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <h1>RIZIN</h1>
-  <p>2025 年末大会 予想対決</p>
-</header>
-
-<div class="rule">
-  判定 500円 / KO・一本 1000円 / タイトルマッチ（11試合目以降）×2
+<div class="header">
+  <div class="container">
+    <h1>RIZIN</h1>
+    <div class="subtitle">Prediction Battle</div>
+    <div class="event-title">Yogibo presents 師走の超強者祭り</div>
+    <div class="event-date">2025.12.31 (WED) さいたまスーパーアリーナ</div>
+    <div class="rule">決まり手ボーナス｜判定 500¥ / KO・Submission 1000¥<br>タイトルマッチ（11試合目以降）×2倍</div>
+  </div>
 </div>
 
-<div class="container" id="matches"></div>
+<div class="content">
+  <div class="container">
+    <div id="matches"></div>
+  </div>
+</div>
 
-<footer>
-  <div class="summary">
-    <div class="summary-top">
-      <div>神戸：<span id="totalK">0</span> 円</div>
-      <div>田代：<span id="totalT">0</span> 円</div>
+<!-- スコアボード（画面下部固定・白背景） -->
+<div class="scoreboard">
+  <div class="scoreboard-content">
+    <div class="scoreboard-scores">
+      <div class="scoreboard-score-item">
+        <div class="scoreboard-label">神戸</div>
+        <div class="scoreboard-value"><span id="totalKobe">0</span> ¥</div>
+      </div>
+      <div class="scoreboard-score-item">
+        <div class="scoreboard-label">田代</div>
+        <div class="scoreboard-value"><span id="totalTashiro">0</span> ¥</div>
+      </div>
     </div>
-    <div class="result" id="diff">引き分け</div>
-    <div class="hit-rate" id="rate">
-      全体：0% / 神戸：0% / 田代：0%
+    <div class="scoreboard-difference" id="difference">DRAW</div>
+    
+    <div class="scoreboard-hit-rate-wrapper">
+      <div id="hitRateKobe" class="scoreboard-hit-rate">神戸 HIT RATE: 0%</div>
+      <div id="hitRateTashiro" class="scoreboard-hit-rate">田代 HIT RATE: 0%</div>
     </div>
   </div>
-</footer>
+</div>
 
 <script>
-const matches = [
-  {no:15, k:"ラジャブアリ・シェイドゥラエフ", t:"朝倉未来"},
-  {no:14, k:"イルホム・ノジモフ", t:"ホベルト・サトシ・ソウザ"},
-  {no:13, k:"扇久保博正", t:"元谷友貴"},
-  {no:12, k:"井上直樹", t:"ダニー・サバテロ"},
-  {no:11, k:"RENA", t:"伊澤星花"},
-  {no:10, k:"サガール・ケラモフ", t:"クレベル・コイケ"},
-  {no:9,  k:"安藤達也", t:"福田龍彌"},
-  {no:8,  k:"新居すぐる", t:"秋元強真"},
-  {no:7,  k:"久保優太", t:"カルシャガ・ダウトベック"},
-  {no:6,  k:"神龍誠", t:"ヒロヤ"},
-  {no:5,  k:"後藤丈治", t:"ホセ・トーレス"},
-  {no:4,  k:"冨澤大智", t:"篠塚辰樹"},
-  {no:3,  k:"雑賀ヤン坊達也", t:"ベイノア・イブラヒム"},
-  {no:2,  k:"芦澤竜誠", t:"ジョリー"},
-  {no:1,  k:"須田健律", t:"ヤマト・エンゾ・マキ"}
+// 正確な対戦カード情報
+// imgK, imgT に画像URLを追加すると実際の選手画像が表示されます
+const matches=[
+{no:15,k:"ラジャブアリ・シェイドゥラエフ",t:"朝倉未来",weight:"フェザー級（66.0kg）",imgK:"",imgT:""},
+{no:14,k:"ホベルト・サトシ・ソウザ",t:"イルホム・ノジモフ",weight:"ライト級（71.0kg）",imgK:"",imgT:""},
+{no:13,k:"伊澤星花",t:"RENA",weight:"女子スーパーアトム級（49.0kg）",imgK:"",imgT:""},
+{no:12,k:"井上直樹",t:"ダニー・サバテロ",weight:"バンタム級（61.0kg）",imgK:"",imgT:""},
+{no:11,k:"扇久保博正",t:"元谷友貴",weight:"フライ級（57.0kg）",imgK:"",imgT:""},
+{no:10,k:"クレベル・コイケ",t:"ヴガール・ケラモフ",weight:"フェザー級（66.0kg）",imgK:"",imgT:""},
+{no:9,k:"福田龍彌",t:"安藤達也",weight:"バンタム級（61.0kg）",imgK:"",imgT:""},
+{no:8,k:"神龍誠",t:"ヒロヤ",weight:"フライ級（57.0kg）",imgK:"",imgT:""},
+{no:7,k:"カルシャガ・ダウトベック",t:"久保優太",weight:"フェザー級（66.0kg）",imgK:"",imgT:""},
+{no:6,k:"秋元強真",t:"新居すぐる",weight:"フェザー級（66.0kg）",imgK:"",imgT:""},
+{no:5,k:"後藤丈治",t:"ホセ・トーレス",weight:"バンタム級（61.0kg）",imgK:"",imgT:""},
+{no:4,k:"雑賀ヤン坊達也",t:"ブラックパンサー ベイノア",weight:"ライト級（73.0kg）",imgK:"",imgT:""},
+{no:3,k:"篠塚辰樹",t:"冨澤大智",weight:"フライ級（57.0kg）",imgK:"",imgT:""},
+{no:2,k:"芦澤竜誠",t:"ジョリー",weight:"バンタム級（61.0kg）",imgK:"",imgT:""},
+{no:1,k:"須田雄律",t:"ヤマザト・エンゾ・マサミ",weight:"RIZIN甲子園決勝",imgK:"",imgT:""}
 ];
 
-const wrap = document.getElementById("matches");
+// 選手画像を生成する関数（UI Avatars API使用）
+function getFighterImage(name, customUrl) {
+  if (customUrl && customUrl !== "") {
+    return customUrl;
+  }
+  // UI Avatars APIで選手名から自動生成
+  const encodedName = encodeURIComponent(name);
+  return `https://ui-avatars.com/api/?name=${encodedName}&size=200&background=random&color=fff&bold=true&font-size=0.4`;
+}
+
+const container=document.getElementById("matches");
 
 matches.forEach((m,i)=>{
-  const div = document.createElement("div");
-  div.className = "match";
-  div.innerHTML = `
-    <h3>第${m.no}試合</h3>
-    <div class="players">
-      <div>神戸：${m.k}</div>
-      <div>田代：${m.t}</div>
-    </div>
-    <div class="controls">
-      <select id="winner${i}">
-        <option value="">勝者未選択</option>
-        <option value="k">${m.k}</option>
-        <option value="t">${m.t}</option>
-      </select>
-      <select id="method${i}">
-        <option value="">決まり手</option>
-        <option value="判定">判定</option>
-        <option value="KO">KO</option>
-        <option value="一本">一本</option>
-      </select>
-    </div>
-  `;
-  wrap.appendChild(div);
+const div=document.createElement("div");
+const isTitle=m.no>=11;
+div.className="match";
 
-  document.getElementById(`winner${i}`).onchange = calc;
-  document.getElementById(`method${i}`).onchange = calc;
+const imgKSrc = getFighterImage(m.k, m.imgK);
+const imgTSrc = getFighterImage(m.t, m.imgT);
+
+div.innerHTML=
+'<div class="match-header">'+
+'  <div>'+
+'    <div class="match-number">第'+m.no+'試合'+(isTitle?' - タイトルマッチ':'')+'</div>'+
+'    <div class="weight-class">'+m.weight+'</div>'+
+'  </div>'+
+  (isTitle?'<div class="title-badge">TITLE</div>':'')+
+'</div>'+
+'<div style="position:relative;">'+
+'<div class="predictions">'+
+'  <div class="prediction kobe" id="pred-kobe-'+i+'">'+
+'    <div class="fighter-icon kobe">'+
+'      <img src="'+imgKSrc+'" alt="'+m.k+'" loading="lazy">'+
+'    </div>'+
+'    <div class="prediction-label">神戸 Prediction</div>'+
+'    <div class="prediction-name">'+m.k+'</div>'+
+'  </div>'+
+'  <div class="prediction tashiro" id="pred-tashiro-'+i+'">'+
+'    <div class="fighter-icon tashiro">'+
+'      <img src="'+imgTSrc+'" alt="'+m.t+'" loading="lazy">'+
+'    </div>'+
+'    <div class="prediction-label">田代 Prediction</div>'+
+'    <div class="prediction-name">'+m.t+'</div>'+
+'  </div>'+
+'</div>'+
+'<div class="vs-divider">VS</div>'+
+'</div>'+
+'<div class="input-group">'+
+'<select id="result'+i+'">'+
+'<option value="">試合結果を選択</option>'+
+'<optgroup label="'+m.k+'">'+
+'<option value="'+m.k+'-判定">'+m.k+' - 判定勝ち</option>'+
+'<option value="'+m.k+'-KO">'+m.k+' - KO勝ち</option>'+
+'<option value="'+m.k+'-一本">'+m.k+' - 一本勝ち</option>'+
+'</optgroup>'+
+'<optgroup label="'+m.t+'">'+
+'<option value="'+m.t+'-判定">'+m.t+' - 判定勝ち</option>'+
+'<option value="'+m.t+'-KO">'+m.t+' - KO勝ち</option>'+
+'<option value="'+m.t+'-一本">'+m.t+' - 一本勝ち</option>'+
+'</optgroup>'+
+'</select>'+
+'</div>'+
+'<div class="result-display hidden" id="resultdisplay'+i+'">'+
+'  <div class="result-item">'+
+'    <span class="result-label">Winner:</span>'+
+'    <span class="result-value" id="result-winner'+i+'">-</span>'+
+'  </div>'+
+'  <div class="result-item">'+
+'    <span class="result-label">Method:</span>'+
+'    <span class="result-value" id="result-method'+i+'">-</span>'+
+'  </div>'+
+'</div>'+
+'<div class="score">'+
+'<div>神戸: <span id="ks'+i+'" class="score-value">0</span> ¥</div>'+
+'<div>田代: <span id="ts'+i+'" class="score-value">0</span> ¥</div>'+
+'</div>';
+container.appendChild(div);
+document.getElementById("result"+i).addEventListener("change",calculate);
 });
 
-function calc(){
-  let kTotal = 0, tTotal = 0;
-  let total = 0, kHit = 0, tHit = 0;
+function calculate(){
+let totalK=0,totalT=0,correctK=0,correctT=0;
+let totalMatchesK=0,totalMatchesT=0;
+matches.forEach((m,i)=>{
+let base=0;
+const resultValue=document.getElementById("result"+i).value;
+const parts=resultValue.split('-');
+const w=parts[0]||"";
+const me=parts[1]||"";
 
-  matches.forEach((m,i)=>{
-    const w = document.getElementById(`winner${i}`).value;
-    const method = document.getElementById(`method${i}`).value;
-    if(!w || !method) return;
+const predKobe=document.getElementById("pred-kobe-"+i);
+const predTashiro=document.getElementById("pred-tashiro-"+i);
+predKobe.classList.remove("winner");
+predTashiro.classList.remove("winner");
+if(w===m.k)predKobe.classList.add("winner");
+if(w===m.t)predTashiro.classList.add("winner");
 
-    let base = method === "判定" ? 500 : 1000;
-    if(m.no >= 11) base *= 2;
+const resultDiv=document.getElementById("resultdisplay"+i);
+const resultWinner=document.getElementById("result-winner"+i);
+const resultMethod=document.getElementById("result-method"+i);
 
-    total++;
-    if(w === "k"){ kTotal += base; kHit++; }
-    if(w === "t"){ tTotal += base; tHit++; }
-  });
+let methodDisplay=me;
+if(me==="判定")methodDisplay="判定";
+if(me==="KO")methodDisplay="KO";
+if(me==="一本")methodDisplay="一本";
 
-  document.getElementById("totalK").textContent = kTotal;
-  document.getElementById("totalT").textContent = tTotal;
+if(w!=="" && me!==""){
+  resultDiv.classList.remove("hidden");
+  resultWinner.textContent=w;
+  resultMethod.textContent=methodDisplay;
+}else{
+  resultDiv.classList.add("hidden");
+}
 
-  const diff = document.getElementById("diff");
-  if(kTotal > tTotal) diff.textContent = `神戸が ${kTotal - tTotal} 円リード`;
-  else if(tTotal > kTotal) diff.textContent = `田代が ${tTotal - kTotal} 円リード`;
-  else diff.textContent = "引き分け";
+if(me==="判定")base=500;
+if(me==="KO"||me==="一本")base=1000;
 
-  const rate = total === 0 ? 0 : Math.round((kHit + tHit) / (2 * total) * 100);
-  document.getElementById("rate").textContent =
-    `全体：${rate}% / 神戸：${total?Math.round(kHit/total*100):0}% / 田代：${total?Math.round(tHit/total*100):0}%`;
+if(m.no>=11)base*=2;
+
+let ks=0,ts=0;
+if(w===m.k){
+  ks=base;
+  correctK++;
+  totalMatchesK++;
+}else if(w===m.t){
+  ts=base;
+  correctT++;
+  totalMatchesT++;
+}
+
+if(w!==""){
+  if(w!==m.k)totalMatchesK++;
+  if(w!==m.t)totalMatchesT++;
+}
+
+document.getElementById("ks"+i).textContent=ks;
+document.getElementById("ts"+i).textContent=ts;
+totalK+=ks;totalT+=ts;
+});
+document.getElementById("totalKobe").textContent=totalK;
+document.getElementById("totalTashiro").textContent=totalT;
+document.getElementById("difference").textContent=totalK===totalT?"DRAW":(totalK>totalT?"神戸 LEADS":"田代 LEADS");
+
+const hitRateK=totalMatchesK>0?Math.round((correctK/totalMatchesK)*100):0;
+const hitRateT=totalMatchesT>0?Math.round((correctT/totalMatchesT)*100):0;
+
+document.getElementById("hitRateKobe").textContent="神戸 HIT RATE: "+hitRateK+"%";
+document.getElementById("hitRateTashiro").textContent="田代 HIT RATE: "+hitRateT+"%";
 }
 </script>
 
