@@ -184,6 +184,21 @@ document.querySelectorAll("select").forEach(s =>
   s.addEventListener("change", calculate)
 );
 
+// ページ読み込み時に保存された選択を復元
+function restoreSelections() {
+  document.querySelectorAll(".match").forEach((m, i) => {
+    const winner = m.querySelector(".winner");
+    const method = m.querySelector(".method");
+
+    const savedWinner = localStorage.getItem(`match${i}_winner`);
+    const savedMethod = localStorage.getItem(`match${i}_method`);
+
+    if (savedWinner) winner.value = savedWinner;
+    if (savedMethod) method.value = savedMethod;
+  });
+  calculate();
+}
+
 function calculate() {
   let kScore = 0, tScore = 0;
   let decided = 0, kHit = 0, tHit = 0;
@@ -192,6 +207,10 @@ function calculate() {
     const winner = m.querySelector(".winner").value;
     const method = m.querySelector(".method").value;
     const summary = m.querySelector(".summary");
+
+    // 選択内容をlocalStorageに保存
+    localStorage.setItem(`match${i}_winner`, winner);
+    localStorage.setItem(`match${i}_method`, method);
 
     if (!winner || !method) {
       summary.textContent = "未確定";
@@ -226,6 +245,9 @@ function calculate() {
   document.getElementById("tashiroRate").textContent =
     decided ? Math.round(tHit / decided * 100) : 0;
 }
+
+// ページ読み込み完了時に復元
+restoreSelections();
 </script>
 
 </body>
