@@ -5,16 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>RIZIN 予想対決</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
     background: #fff;
     color: #333;
-    padding: 0;
     min-height: 100vh;
     padding-bottom: 120px;
   }
@@ -22,16 +17,9 @@
     background: linear-gradient(to bottom, #fff 0%, #f5f5f5 100%);
     padding: 30px 20px;
     border-bottom: 3px solid #E30613;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   }
-  .container {
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  .logo {
-    text-align: center;
-    margin-bottom: 20px;
-  }
+  .container { max-width: 1000px; margin: 0 auto; }
   h1 {
     text-align: center;
     margin-bottom: 8px;
@@ -40,7 +28,7 @@
     font-weight: 900;
     letter-spacing: 8px;
     text-transform: uppercase;
-    text-shadow: 0 2px 4px rgba(227, 6, 19, 0.2);
+    text-shadow: 0 2px 4px rgba(227,6,19,0.2);
   }
   .subtitle {
     text-align: center;
@@ -53,15 +41,13 @@
     font-size: 14px;
     text-align: center;
     padding: 15px;
-    background: rgba(227, 6, 19, 0.05);
-    border: 1px solid rgba(227, 6, 19, 0.2);
+    background: rgba(227,6,19,0.05);
+    border: 1px solid rgba(227,6,19,0.2);
     color: #333;
     letter-spacing: 1px;
   }
-  .content {
-    padding: 30px 20px;
-    background: #f9f9f9;
-  }
+  .content { padding: 30px 20px; background: #f9f9f9; }
+
   .match {
     background: #fff;
     border: 2px solid #e0e0e0;
@@ -71,232 +57,204 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
-  .match::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
+  .match::before{
+    content:'';
+    position:absolute; top:0; left:0; right:0;
+    height:2px;
     background: linear-gradient(90deg, transparent 0%, #E30613 50%, transparent 100%);
-    opacity: 0;
+    opacity:0;
     transition: opacity 0.3s ease;
   }
-  .match:hover {
-    border-color: #E30613;
-    box-shadow: 0 4px 16px rgba(227, 6, 19, 0.15);
+  .match:hover { border-color:#E30613; box-shadow:0 4px 16px rgba(227,6,19,0.15); }
+  .match:hover::before { opacity:1; }
+
+  .match-header{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:20px; padding-bottom:15px;
+    border-bottom:1px solid #e0e0e0;
   }
-  .match:hover::before {
-    opacity: 1;
+  .match-number{
+    font-weight:900; font-size:20px; color:#E30613;
+    letter-spacing:2px; text-transform:uppercase;
   }
-  .match-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e0e0e0;
+  .title-badge{
+    background:#E30613; color:#fff;
+    padding:4px 12px; border-radius:3px;
+    font-size:11px; font-weight:900; letter-spacing:1px;
   }
-  .match-number {
-    font-weight: 900;
-    font-size: 20px;
-    color: #E30613;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .title-badge {
-    background: #E30613;
-    color: #fff;
-    padding: 4px 12px;
-    border-radius: 3px;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 1px;
-  }
-  .predictions {
-    display: grid;
+
+  .predictions{
+    display:grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap:15px;
+    margin-bottom:20px;
   }
-  .prediction {
-    background: #f5f5f5;
-    padding: 15px;
-    border: 1px solid #e0e0e0;
-    position: relative;
-    transition: all 0.3s ease;
+  .prediction{
+    background:#f5f5f5;
+    padding:15px;
+    border:1px solid #e0e0e0;
+    position:relative;
+    transition:all 0.3s ease;
   }
-  .prediction::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
+  .prediction::after{
+    content:'';
+    position:absolute; top:0; left:0;
+    width:4px; height:100%;
   }
-  .prediction.kobe::after {
-    background: #00D4FF;
+  .prediction.kobe::after{ background:#00D4FF; }
+  .prediction.tashiro::after{ background:#FFD700; }
+  .prediction:hover{ border-color:#ccc; background:#fff; }
+
+  .prediction-label{
+    font-size:11px; opacity:0.6; margin-bottom:6px;
+    text-transform:uppercase; letter-spacing:1px; font-weight:700; color:#666;
   }
-  .prediction.tashiro::after {
-    background: #FFD700;
+  .prediction-name{ font-weight:700; font-size:15px; color:#333; }
+
+  .input-group{ margin-bottom:15px; }
+  .input-label{
+    display:block;
+    font-size:12px;
+    margin-bottom:8px;
+    color:#666;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
   }
-  .prediction:hover {
-    border-color: #ccc;
-    background: #fff;
+  select{
+    width:100%;
+    padding:12px 15px;
+    background:#fff;
+    color:#333;
+    border:2px solid #e0e0e0;
+    font-size:15px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+    font-weight:600;
   }
-  .prediction-label {
-    font-size: 11px;
-    opacity: 0.6;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-    color: #666;
+  select:hover{ border-color:#E30613; }
+  select:focus{
+    outline:none;
+    border-color:#E30613;
+    box-shadow:0 0 0 3px rgba(227,6,19,0.1);
   }
-  .prediction-name {
-    font-weight: 700;
-    font-size: 15px;
-    color: #333;
+
+  .checkbox-group{
+    display:flex; align-items:center; gap:10px;
+    padding:12px 15px;
+    background: rgba(227,6,19,0.05);
+    border:1px solid rgba(227,6,19,0.2);
+    cursor:pointer;
+    transition:all 0.2s ease;
+    margin-bottom: 10px;
   }
-  .input-group {
-    margin-bottom: 15px;
+  .checkbox-group:hover{
+    background: rgba(227,6,19,0.1);
+    border-color: rgba(227,6,19,0.4);
   }
-  .input-label {
-    display: block;
-    font-size: 12px;
-    margin-bottom: 8px;
-    color: #666;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  input[type="checkbox"]{
+    width:20px; height:20px; cursor:pointer;
+    accent-color:#E30613;
   }
-  select {
-    width: 100%;
-    padding: 12px 15px;
-    background: #fff;
-    color: #333;
+
+  .score{
+    display:flex; justify-content:space-between;
+    margin-top:20px; padding-top:20px;
+    border-top:1px solid #e0e0e0;
+    font-size:15px; font-weight:700;
+  }
+  .score-item{ display:flex; align-items:center; gap:8px; color:#333; }
+  .score-value{ color:#E30613; font-size:18px; font-weight:900; }
+
+  .total{
+    position:fixed; bottom:0; left:0; right:0;
+    background: linear-gradient(to top, #fff 0%, #f5f5f5 100%);
+    padding:20px;
+    border-top:3px solid #E30613;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  }
+  .total-content{
+    display:flex; flex-direction:column; align-items:center; gap:12px;
+  }
+  .total-scores{
+    display:flex; justify-content:center; gap:80px;
+  }
+  .total-item{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .total-label{
+    font-size:13px; color:#666;
+    text-transform:uppercase; letter-spacing:2px; font-weight:700;
+  }
+  .total-value{
+    font-size:36px; font-weight:900; color:#E30613;
+    text-shadow:0 2px 4px rgba(227,6,19,0.2);
+    letter-spacing:2px;
+  }
+
+  .difference{
+    font-size:16px; color:#333; font-weight:700;
+    padding:8px 20px;
+    background: rgba(227,6,19,0.05);
+    border: 1px solid rgba(227,6,19,0.2);
+    border-radius:4px;
+    letter-spacing:1px;
+    text-align:center;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .difference .winner, .difference .amount { color:#E30613; font-weight:900; }
+
+  /* 結果入力セクション */
+  .result-section{
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    border-top: 2px solid #eee;
+  }
+  .result-row{
+    display:flex;
+    gap:10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .result-row select, .result-row button{
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .result-row select{
     border: 2px solid #e0e0e0;
-    font-size: 15px;
-    cursor: pointer;
-    transition: all 0.2s ease;
     font-weight: 600;
   }
-  select:hover {
-    border-color: #E30613;
-  }
-  select:focus {
-    outline: none;
-    border-color: #E30613;
-    box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.1);
-  }
-  .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 15px;
-    background: rgba(227, 6, 19, 0.05);
-    border: 1px solid rgba(227, 6, 19, 0.2);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .checkbox-group:hover {
-    background: rgba(227, 6, 19, 0.1);
-    border-color: rgba(227, 6, 19, 0.4);
-  }
-  .checkbox-group.disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-  input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: #E30613;
-  }
-  input[type="checkbox"]:disabled {
-    cursor: not-allowed;
-  }
-  .score {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #e0e0e0;
-    font-size: 15px;
-    font-weight: 700;
-  }
-  .score-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #333;
-  }
-  .score-value {
-    color: #E30613;
-    font-size: 18px;
+  .result-row button{
+    border: 2px solid #E30613;
+    background: #E30613;
+    color: #fff;
     font-weight: 900;
+    cursor: pointer;
   }
-  .total {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, #fff 0%, #f5f5f5 100%);
-    padding: 20px;
-    border-top: 3px solid #E30613;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  .result-row button:hover{
+    filter: brightness(0.95);
   }
-  .total-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-  .total-scores {
-    display: flex;
-    justify-content: center;
-    gap: 80px;
-  }
-  .total-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-  .total-label {
-    font-size: 13px;
+  .mini{
+    font-size: 12px;
     color: #666;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
+    margin-top: 6px;
   }
-  .total-value {
-    font-size: 36px;
-    font-weight: 900;
-    color: #E30613;
-    text-shadow: 0 2px 4px rgba(227, 6, 19, 0.2);
-    letter-spacing: 2px;
-  }
-  .difference {
-    font-size: 16px;
+  ul#history{ margin-top: 10px; padding-left: 18px; }
+  ul#history li{ margin: 6px 0; }
+  .danger-btn{
+    margin-top: 8px;
+    border: 2px solid #aaa;
+    background: #fff;
     color: #333;
     font-weight: 700;
-    padding: 8px 20px;
-    background: rgba(227, 6, 19, 0.05);
-    border: 1px solid rgba(227, 6, 19, 0.2);
-    border-radius: 4px;
-    letter-spacing: 1px;
+    padding: 8px 10px;
+    cursor: pointer;
   }
-  .difference .winner {
-    color: #E30613;
-    font-weight: 900;
-  }
-  .difference .amount {
-    color: #E30613;
-    font-weight: 900;
-  }
+  .danger-btn:hover{ background:#f5f5f5; }
 </style>
 </head>
 
@@ -306,9 +264,7 @@
   <div class="container">
     <h1>RIZIN</h1>
     <div class="subtitle">予想対決 スコアボード</div>
-    <div class="rule">
-      判定 500円 / KO・一本 1000円 / タイトルマッチ（11試合目以降）×2
-    </div>
+    <div class="rule">判定 500円 / KO・一本 1000円 / タイトルマッチ（11試合目以降）×2</div>
   </div>
 </div>
 
@@ -333,157 +289,26 @@
 
     <div class="difference" id="difference">引き分け</div>
 
-    <!-- 勝率/的中率（ここに表示されます） -->
-    <div id="winRate" class="difference" style="margin-top:10px;">
-      勝率 / 的中率：0%
-    </div>
-   <div id="hitRateKobe" class="difference" style="margin-top:6px;">
-  神戸 的中率：0%
-</div>
-<div id="hitRateTashiro" class="difference" style="margin-top:6px;">
-  田代 的中率：0%
-</div>
-
+    <!-- 的中率表示（ここ） -->
+    <div id="hitRateAll" class="difference">全体 的中率：0%（0/0）</div>
+    <div id="hitRateKobe" class="difference">神戸 的中率：0%（0/0）</div>
+    <div id="hitRateTashiro" class="difference">田代 的中率：0%（0/0）</div>
   </div>
 </div>
 
-<script>
-const matches = [
-  {no:15, k:"ラジャブアリ・シェイドゥラエフ", t:"朝倉未来"},
-  {no:14, k:"イルホム・ノジモフ", t:"ホベルト・サトシ・ソウザ"},
-  {no:13, k:"扇久保博正", t:"元谷友貴"},
-  {no:12, k:"井上直樹", t:"ダニー・サバテロ"},
-  {no:11, k:"RENA", t:"伊澤星花"},
-  {no:10, k:"サガール・ケラモフ", t:"クレベル・コイケ"},
-  {no:8,  k:"安藤達也", t:"福田龍彌"},
-  {no:7,  k:"新居すぐる", t:"秋元強真"},
-  {no:6,  k:"久保優太", t:"カルシャガ・ダウトベック"},
-  {no:5,  k:"神龍誠", t:"ヒロヤ"},
-  {no:4,  k:"後藤丈治", t:"ホセ・トーレス"},
-  {no:3,  k:"冨澤大智", t:"篠塚辰樹"},
-  {no:2,  k:"雑賀ヤン坊達也", t:"ベイノア・イブラヒム"},
-  {no:1,  k:"芦澤竜誠", t:"ジョリー"},
-  {no:0,  k:"須田健律", t:"ヤマト・エンゾ・マキ"},
-];
+<section class="result-section">
+  <h2 style="margin-bottom:12px;">結果入力（的中率用）</h2>
 
-const container = document.getElementById("matches");
+  <div class="result-row">
+    <!-- 誰の結果かを必ず持たせる（ここが “それぞれの的中率” の肝） -->
+    <select id="who">
+      <option value="kobe">神戸</option>
+      <option value="tashiro">田代</option>
+    </select>
 
-matches.forEach((m,i)=>{
-  const div = document.createElement("div");
-  div.className = "match";
-
-  const isTitleEligible = m.no >= 11;
-
-  div.innerHTML = `
-    <div class="match-header">
-      <div class="match-number">第${m.no}試合</div>
-      ${isTitleEligible ? '<div class="title-badge">TITLE ELIGIBLE</div>' : ''}
-    </div>
-
-    <div class="predictions">
-      <div class="prediction kobe">
-        <div class="prediction-label">神戸 予想</div>
-        <div class="prediction-name">${m.k}</div>
-      </div>
-      <div class="prediction tashiro">
-        <div class="prediction-label">田代 予想</div>
-        <div class="prediction-name">${m.t}</div>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label class="input-label">勝者</label>
-      <select id="winner${i}">
-        <option value="">未選択</option>
-        <option value="${m.k}">${m.k}</option>
-        <option value="${m.t}">${m.t}</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <label class="input-label">勝ち方</label>
-      <select id="method${i}">
-        <option value="">未選択</option>
-        <option value="判定">判定</option>
-        <option value="KO">KO</option>
-        <option value="一本">一本</option>
-      </select>
-    </div>
-
-    ${isTitleEligible ? `
-    <label class="checkbox-group" id="titleLabel${i}">
-      <input type="checkbox" id="title${i}">
-      <span>タイトルマッチ（獲得ポイント2倍）</span>
-    </label>
-    ` : `<input type="checkbox" id="title${i}" style="display:none;">`}
-
-    <div class="score">
-      <div class="score-item">
-        <span>神戸：</span>
-        <span class="score-value"><span id="ks${i}">0</span> 円</span>
-      </div>
-      <div class="score-item">
-        <span>田代：</span>
-        <span class="score-value"><span id="ts${i}">0</span> 円</span>
-      </div>
-    </div>
-  `;
-  container.appendChild(div);
-
-  ["winner","method","title"].forEach(key=>{
-    document.getElementById(`${key}${i}`).addEventListener("change", calculate);
-  });
-});
-
-function calculate(){
-  let totalK = 0;
-  let totalT = 0;
-
-  matches.forEach((m,i)=>{
-    let base = 0;
-    const winner = document.getElementById(`winner${i}`).value;
-    const method = document.getElementById(`method${i}`).value;
-    const isTitle = document.getElementById(`title${i}`).checked;
-
-    if(method==="判定") base = 500;
-    if(method==="KO" || method==="一本") base = 1000;
-
-    if(isTitle && m.no >= 11) base *= 2;
-
-    let ks = 0, ts = 0;
-    if(winner === m.k) ks = base;
-    if(winner === m.t) ts = base;
-
-    document.getElementById(`ks${i}`).textContent = ks;
-    document.getElementById(`ts${i}`).textContent = ts;
-
-    totalK += ks;
-    totalT += ts;
-  });
-
-  document.getElementById("totalKobe").textContent = totalK;
-  document.getElementById("totalTashiro").textContent = totalT;
-
-  const diff = Math.abs(totalK - totalT);
-  const diffElement = document.getElementById("difference");
-
-  if (totalK > totalT) {
-    diffElement.innerHTML = `<span class="winner">神戸</span> が <span class="amount">${diff.toLocaleString()}円</span> リード`;
-  } else if (totalT > totalK) {
-    diffElement.innerHTML = `<span class="winner">田代</span> が <span class="amount">${diff.toLocaleString()}円</span> リード`;
-  } else {
-    diffElement.textContent = "引き分け";
-  }
-}
-</script>
-
-<section style="max-width:600px;margin:40px auto;padding:20px;border-top:2px solid #eee;">
-  <h2 style="margin-bottom:12px;">結果入力</h2>
-
-  <div style="display:flex;gap:10px;margin-bottom:10px;">
     <select id="result">
-      <option value="win">勝ち</option>
-      <option value="lose">負け</option>
+      <option value="win">的中（勝ち）</option>
+      <option value="lose">ハズレ（負け）</option>
     </select>
 
     <select id="bet">
@@ -491,83 +316,272 @@ function calculate(){
       <option value="1000">1000円</option>
     </select>
 
-    <button onclick="addResult()">追加</button>
+    <button id="addBtn" type="button">追加</button>
   </div>
 
-  <h3>合計収支：<span id="total">0</span> 円</h3>
+  <div class="mini">
+    ※ ここは「的中した/外した」を記録して、神戸・田代それぞれの的中率を出すための入力です。<br/>
+    ※ 収支（+500/-500など）も履歴に残します。
+  </div>
 
+  <h3 style="margin-top:14px;">合計収支：<span id="total">0</span> 円</h3>
   <ul id="history"></ul>
+
+  <button class="danger-btn" id="resetBtn" type="button">履歴を全削除（localStorage）</button>
 </section>
 
 <script>
-  // ===== 結果入力（localStorage）=====
+(() => {
+  // ======================
+  // 設定
+  // ======================
   const STORAGE_KEY = "rizin_results";
-  let results = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-  function render() {
+  // ======================
+  // 予想対決（上のスコアボード）
+  // ======================
+  const matches = [
+    {no:15, k:"ラジャブアリ・シェイドゥラエフ", t:"朝倉未来"},
+    {no:14, k:"イルホム・ノジモフ", t:"ホベルト・サトシ・ソウザ"},
+    {no:13, k:"扇久保博正", t:"元谷友貴"},
+    {no:12, k:"井上直樹", t:"ダニー・サバテロ"},
+    {no:11, k:"RENA", t:"伊澤星花"},
+    {no:10, k:"サガール・ケラモフ", t:"クレベル・コイケ"},
+    {no:8,  k:"安藤達也", t:"福田龍彌"},
+    {no:7,  k:"新居すぐる", t:"秋元強真"},
+    {no:6,  k:"久保優太", t:"カルシャガ・ダウトベック"},
+    {no:5,  k:"神龍誠", t:"ヒロヤ"},
+    {no:4,  k:"後藤丈治", t:"ホセ・トーレス"},
+    {no:3,  k:"冨澤大智", t:"篠塚辰樹"},
+    {no:2,  k:"雑賀ヤン坊達也", t:"ベイノア・イブラヒム"},
+    {no:1,  k:"芦澤竜誠", t:"ジョリー"},
+    {no:0,  k:"須田健律", t:"ヤマト・エンゾ・マキ"},
+  ];
+
+  const matchesContainer = document.getElementById("matches");
+
+  matches.forEach((m, i) => {
+    const div = document.createElement("div");
+    div.className = "match";
+
+    const isTitleEligible = m.no >= 11;
+
+    div.innerHTML = `
+      <div class="match-header">
+        <div class="match-number">第${m.no}試合</div>
+        ${isTitleEligible ? '<div class="title-badge">TITLE ELIGIBLE</div>' : ''}
+      </div>
+
+      <div class="predictions">
+        <div class="prediction kobe">
+          <div class="prediction-label">神戸 予想</div>
+          <div class="prediction-name">${m.k}</div>
+        </div>
+        <div class="prediction tashiro">
+          <div class="prediction-label">田代 予想</div>
+          <div class="prediction-name">${m.t}</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">勝者</label>
+        <select id="winner${i}">
+          <option value="">未選択</option>
+          <option value="${m.k}">${m.k}</option>
+          <option value="${m.t}">${m.t}</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">勝ち方</label>
+        <select id="method${i}">
+          <option value="">未選択</option>
+          <option value="判定">判定</option>
+          <option value="KO">KO</option>
+          <option value="一本">一本</option>
+        </select>
+      </div>
+
+      ${isTitleEligible ? `
+        <label class="checkbox-group">
+          <input type="checkbox" id="title${i}">
+          <span>タイトルマッチ（獲得ポイント2倍）</span>
+        </label>
+      ` : `<input type="checkbox" id="title${i}" style="display:none;">`}
+
+      <div class="score">
+        <div class="score-item">
+          <span>神戸：</span>
+          <span class="score-value"><span id="ks${i}">0</span> 円</span>
+        </div>
+        <div class="score-item">
+          <span>田代：</span>
+          <span class="score-value"><span id="ts${i}">0</span> 円</span>
+        </div>
+      </div>
+    `;
+
+    matchesContainer.appendChild(div);
+
+    ["winner", "method", "title"].forEach(key => {
+      document.getElementById(`${key}${i}`).addEventListener("change", calculateScoreBoard);
+    });
+  });
+
+  function calculateScoreBoard() {
+    let totalK = 0;
+    let totalT = 0;
+
+    matches.forEach((m, i) => {
+      let base = 0;
+      const winner = document.getElementById(`winner${i}`).value;
+      const method = document.getElementById(`method${i}`).value;
+      const isTitle = document.getElementById(`title${i}`).checked;
+
+      if (method === "判定") base = 500;
+      if (method === "KO" || method === "一本") base = 1000;
+      if (isTitle && m.no >= 11) base *= 2;
+
+      let ks = 0, ts = 0;
+      if (winner === m.k) ks = base;
+      if (winner === m.t) ts = base;
+
+      document.getElementById(`ks${i}`).textContent = ks;
+      document.getElementById(`ts${i}`).textContent = ts;
+
+      totalK += ks;
+      totalT += ts;
+    });
+
+    document.getElementById("totalKobe").textContent = totalK;
+    document.getElementById("totalTashiro").textContent = totalT;
+
+    const diff = Math.abs(totalK - totalT);
+    const diffEl = document.getElementById("difference");
+
+    if (totalK > totalT) {
+      diffEl.innerHTML = `<span class="winner">神戸</span> が <span class="amount">${diff.toLocaleString()}円</span> リード`;
+    } else if (totalT > totalK) {
+      diffEl.innerHTML = `<span class="winner">田代</span> が <span class="amount">${diff.toLocaleString()}円</span> リード`;
+    } else {
+      diffEl.textContent = "引き分け";
+    }
+  }
+
+  // ======================
+  // 的中率 / 収支（localStorage）
+  // - 既存データが "who" を持っていなくても壊れないようにする
+  // ======================
+  function safeLoadResults() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    try {
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function safeSaveResults(arr) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  }
+
+  // 表示用：％（0件なら0%）
+  function percent(wins, total) {
+    if (!total) return 0;
+    return Math.round((wins / total) * 100);
+  }
+
+  // ステータス更新（履歴・収支・的中率3つ）
+  function updateStats() {
+    const results = safeLoadResults();
+
+    // ---- 履歴＆収支 ----
     const history = document.getElementById("history");
     const totalEl = document.getElementById("total");
     history.innerHTML = "";
 
-    let total = 0;
+    let totalMoney = 0;
     results.forEach((r, i) => {
-      total += r.amount;
+      const bet = Number(r?.bet || 0);
+      const amount = Number(r?.amount || 0);
+      totalMoney += amount;
+
+      const whoLabel =
+        r?.who === "kobe" ? "神戸" :
+        r?.who === "tashiro" ? "田代" :
+        "（不明）";
+
+      const resultLabel = r?.result === "win" ? "的中" : "ハズレ";
+      const sign = amount > 0 ? "+" : "";
+
       const li = document.createElement("li");
-      li.textContent = `${i + 1}. ${r.result === "win" ? "勝ち" : "負け"} / ${r.bet}円 → ${r.amount > 0 ? "+" : ""}${r.amount}円`;
+      li.textContent = `${i + 1}. ${whoLabel} / ${resultLabel} / ${bet}円 → ${sign}${amount}円`;
       history.appendChild(li);
     });
+    totalEl.textContent = totalMoney;
 
-    totalEl.textContent = total;
+    // ---- 的中率（全体 / 神戸 / 田代）----
+    const allTotal = results.length;
+    const allWins = results.filter(r => r && r.result === "win").length;
+
+    // ここが「それぞれ」の肝：whoで分ける
+    const kobeList = results.filter(r => r && r.who === "kobe");
+    const tashiroList = results.filter(r => r && r.who === "tashiro");
+
+    const kobeTotal = kobeList.length;
+    const kobeWins = kobeList.filter(r => r.result === "win").length;
+
+    const tashiroTotal = tashiroList.length;
+    const tashiroWins = tashiroList.filter(r => r.result === "win").length;
+
+    const allRate = percent(allWins, allTotal);
+    const kobeRate = percent(kobeWins, kobeTotal);
+    const tashiroRate = percent(tashiroWins, tashiroTotal);
+
+    document.getElementById("hitRateAll").textContent =
+      `全体 的中率：${allRate}%（${allWins}/${allTotal}）`;
+
+    document.getElementById("hitRateKobe").textContent =
+      `神戸 的中率：${kobeRate}%（${kobeWins}/${kobeTotal}）`;
+
+    document.getElementById("hitRateTashiro").textContent =
+      `田代 的中率：${tashiroRate}%（${tashiroWins}/${tashiroTotal}）`;
   }
 
+  // 追加
   function addResult() {
-    const result = document.getElementById("result").value;
+    const who = document.getElementById("who").value;      // kobe / tashiro
+    const result = document.getElementById("result").value; // win / lose
     const bet = Number(document.getElementById("bet").value);
+
+    // 金額（的中=+bet / ハズレ=-bet）
     const amount = result === "win" ? bet : -bet;
 
-    results.push({ result, bet, amount });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
-    render();
-    updateWinRate(); // 追加後に勝率も更新
+    const results = safeLoadResults();
+
+    // 既存データが壊れてても、配列として扱える範囲で積む
+    results.push({ who, result, bet, amount, at: Date.now() });
+
+    safeSaveResults(results);
+    updateStats();
   }
 
-  render();
-</script>
-
-<script>
-  // ===== 勝率 / 的中率（下部に表示）=====
-  function updateWinRate() {
-    const el = document.getElementById('winRate');
-    if (!el) return;
-
-    const raw = localStorage.getItem('rizin_results');
-    if (!raw) {
-      el.textContent = '勝率 / 的中率：0%';
-      return;
-    }
-
-    let arr;
-    try {
-      arr = JSON.parse(raw);
-    } catch {
-      el.textContent = '勝率 / 的中率：0%';
-      return;
-    }
-
-    if (!Array.isArray(arr) || arr.length === 0) {
-      el.textContent = '勝率 / 的中率：0%';
-      return;
-    }
-
-    const total = arr.length;
-    const wins = arr.filter(x => x && x.result === 'win').length;
-    const rate = Math.round((wins / total) * 100);
-
-    el.innerHTML = `勝率 / 的中率：<span class="amount">${rate}%</span>`;
+  // 全削除
+  function resetResults() {
+    localStorage.removeItem(STORAGE_KEY);
+    updateStats();
   }
 
-  // 初期表示（ページ読み込み時）
-  updateWinRate();
+  // イベント設定
+  document.getElementById("addBtn").addEventListener("click", addResult);
+  document.getElementById("resetBtn").addEventListener("click", resetResults);
+
+  // 初期描画
+  calculateScoreBoard();
+  updateStats();
+})();
 </script>
 
 </body>
