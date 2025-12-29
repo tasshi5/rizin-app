@@ -1,603 +1,145 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>RIZIN 予想対決</title>
+<meta charset="UTF-8">
+<title>RIZIN 予想アプリ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
-  :root{
-    --red:#E30613;
-    --bg:#f7f7f7;
-    --line:#e7e7e7;
-    --text:#222;
-    --muted:#666;
-    --kobe:#00D4FF;
-    --tashiro:#FFD700;
-  }
-  *{ box-sizing:border-box; }
-  body{
-    margin:0;
-    font-family: system-ui, -apple-system, "Helvetica Neue", Arial, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
-    color:var(--text);
-    background:#fff;
-  }
-  .header{
-    padding:26px 16px 18px;
-    border-bottom:3px solid var(--red);
-    background: linear-gradient(to bottom, #fff 0%, #f5f5f5 100%);
-    box-shadow: 0 4px 18px rgba(0,0,0,.06);
-  }
-  .container{ max-width:1000px; margin:0 auto; }
-  h1{
-    margin:0;
-    text-align:center;
-    font-size:44px;
-    font-weight:900;
-    letter-spacing:8px;
-    color:var(--red);
-    text-shadow:0 2px 4px rgba(227,6,19,.18);
-  }
-  .subtitle{
-    margin-top:8px;
-    text-align:center;
-    color:var(--muted);
-    font-size:14px;
-    letter-spacing:2px;
-  }
-  .rule{
-    margin:14px auto 0;
-    max-width:760px;
-    font-size:13px;
-    text-align:center;
-    padding:12px 14px;
-    background: rgba(227, 6, 19, 0.05);
-    border: 1px solid rgba(227, 6, 19, 0.2);
-    color:#333;
-    border-radius:8px;
-  }
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  background: #fff;
+  color: #333;
+}
 
-  .content{
-    background: var(--bg);
-    padding:24px 16px 28px;
-  }
+header {
+  text-align: center;
+  padding: 30px 10px;
+  border-bottom: 3px solid #e60012;
+}
 
-  /* Summary (NOT fixed: 壊れにくい) */
-  .summary{
-    background:#fff;
-    border:1px solid var(--line);
-    border-left:5px solid var(--red);
-    border-radius:12px;
-    padding:16px;
-    margin: 18px auto 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,.05);
-  }
-  .summary-top{
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px 24px;
-    align-items:center;
-    justify-content:space-between;
-  }
-  .scores{
-    display:flex;
-    gap:28px;
-    align-items:flex-end;
-  }
-  .scoreBox{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    align-items:flex-start;
-    min-width:140px;
-  }
-  .scoreLabel{
-    font-size:12px;
-    color:var(--muted);
-    letter-spacing:1px;
-    font-weight:700;
-    text-transform:uppercase;
-  }
-  .scoreValue{
-    font-size:30px;
-    font-weight:900;
-    color:var(--red);
-    letter-spacing:1px;
-  }
-  .lead{
-    flex:1;
-    min-width:220px;
-    font-weight:800;
-    background: rgba(227, 6, 19, 0.05);
-    border: 1px solid rgba(227, 6, 19, 0.2);
-    padding:10px 12px;
-    border-radius:10px;
-    text-align:center;
-  }
-  .lead .who, .lead .amt{ color:var(--red); font-weight:900; }
+h1 {
+  color: #e60012;
+  margin: 0;
+  letter-spacing: 4px;
+}
 
-  /* Hit rates small & bottom */
-  .hitRates{
-    margin-top:12px;
-    padding-top:12px;
-    border-top:1px solid var(--line);
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    align-items:center;
-    justify-content:center;
-  }
-  .chip{
-    font-size:12px;
-    color:#333;
-    background:#fafafa;
-    border:1px solid var(--line);
-    padding:7px 10px;
-    border-radius:999px;
-    display:flex;
-    gap:8px;
-    align-items:center;
-    white-space:nowrap;
-  }
-  .chip b{ font-weight:900; color:var(--red); }
-  .actions{
-    margin-top:12px;
-    display:flex;
-    gap:8px;
-    justify-content:flex-end;
-    flex-wrap:wrap;
-  }
-  button{
-    border:1px solid var(--line);
-    background:#fff;
-    padding:9px 12px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:800;
-  }
-  button:hover{ border-color:#ccc; }
-  .danger{
-    border-color: rgba(227,6,19,.35);
-    background: rgba(227,6,19,.06);
-  }
+main {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 0 12px;
+}
 
-  /* Match cards */
-  .match{
-    background:#fff;
-    border:1px solid var(--line);
-    border-left:5px solid var(--red);
-    border-radius:12px;
-    padding:18px;
-    margin-bottom:14px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.05);
-  }
-  .matchHeader{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    padding-bottom:12px;
-    border-bottom:1px solid var(--line);
-    margin-bottom:12px;
-  }
-  .matchNo{
-    font-weight:900;
-    color:var(--red);
-    letter-spacing:1px;
-  }
-  .badge{
-    font-size:11px;
-    font-weight:900;
-    letter-spacing:1px;
-    color:#fff;
-    background:var(--red);
-    padding:4px 10px;
-    border-radius:8px;
-  }
-  .predictions{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-    margin-bottom:12px;
-  }
-  .pred{
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:12px;
-    background:#f6f6f6;
-    position:relative;
-  }
-  .pred::before{
-    content:"";
-    position:absolute;
-    left:0; top:0; bottom:0;
-    width:4px;
-    border-radius:10px 0 0 10px;
-  }
-  .pred.kobe::before{ background:var(--kobe); }
-  .pred.tashiro::before{ background:var(--tashiro); }
-  .predLabel{
-    font-size:11px;
-    color:var(--muted);
-    font-weight:800;
-    letter-spacing:1px;
-    text-transform:uppercase;
-  }
-  .predName{
-    margin-top:6px;
-    font-size:15px;
-    font-weight:900;
-  }
+.match {
+  border-left: 4px solid #e60012;
+  background: #fafafa;
+  padding: 15px;
+  margin-bottom: 20px;
+}
 
-  .inputs{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-    margin-top:10px;
-  }
-  @media (max-width:720px){
-    .predictions, .inputs{ grid-template-columns: 1fr; }
-    .scores{ gap:18px; }
-  }
-  label{
-    display:block;
-    font-size:12px;
-    color:var(--muted);
-    font-weight:900;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    margin-bottom:6px;
-  }
-  select{
-    width:100%;
-    padding:11px 12px;
-    border-radius:10px;
-    border:2px solid var(--line);
-    background:#fff;
-    font-size:14px;
-    font-weight:800;
-    cursor:pointer;
-  }
-  select:focus{
-    outline:none;
-    border-color: var(--red);
-    box-shadow: 0 0 0 3px rgba(227,6,19,.10);
-  }
+.names {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
 
-  .titleToggle{
-    margin-top:10px;
-    display:flex;
-    gap:10px;
-    align-items:center;
-    padding:10px 12px;
-    border-radius:10px;
-    border:1px solid rgba(227,6,19,.22);
-    background: rgba(227,6,19,.05);
-    user-select:none;
-  }
-  .titleToggle input{ width:18px; height:18px; accent-color: var(--red); }
-  .titleToggle small{ color:var(--muted); font-weight:800; }
+select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 8px;
+}
 
-  .rowScore{
-    margin-top:12px;
-    padding-top:12px;
-    border-top:1px solid var(--line);
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    flex-wrap:wrap;
-    font-weight:900;
-  }
-  .rowScore span b{ color:var(--red); font-size:18px; }
-  .footerSpace{ height:22px; }
+.result-area {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid #eee;
+}
+
+.hit-rate {
+  margin-top: 40px;
+  padding: 12px;
+  font-size: 12px;
+  text-align: center;
+  color: #666;
+  border-top: 1px dashed #ccc;
+}
 </style>
 </head>
 
 <body>
-  <div class="header">
-    <div class="container">
-      <h1>RIZIN</h1>
-      <div class="subtitle">予想対決 スコアボード</div>
-      <div class="rule">判定 500円 / KO・一本 1000円 / タイトルマッチ（11試合目以降）×2</div>
-    </div>
-  </div>
 
-  <div class="content">
-    <div class="container">
-      <div id="matches"></div>
+<header>
+  <h1>RIZIN</h1>
+  <p>予想対決</p>
+</header>
 
-      <!-- 下部（小さく）にまとめて表示：fixedではないので壊れにくい -->
-      <div class="summary" id="summary">
-        <div class="summary-top">
-          <div class="scores">
-            <div class="scoreBox">
-              <div class="scoreLabel">神戸</div>
-              <div class="scoreValue"><span id="totalKobe">0</span>円</div>
-            </div>
-            <div class="scoreBox">
-              <div class="scoreLabel">田代</div>
-              <div class="scoreValue"><span id="totalTashiro">0</span>円</div>
-            </div>
-          </div>
-          <div class="lead" id="leadText">引き分け</div>
-        </div>
+<main id="app"></main>
 
-        <div class="hitRates">
-          <div class="chip">全体（平均）的中率：<b id="hitAll">0%</b></div>
-          <div class="chip">神戸 的中率：<b id="hitKobe">0%</b></div>
-          <div class="chip">田代 的中率：<b id="hitTashiro">0%</b></div>
-          <div class="chip">確定試合数：<b id="decidedCount">0</b></div>
-        </div>
-
-        <div class="actions">
-          <button id="btnCopy">結果データをコピー</button>
-          <button class="danger" id="btnReset">全データ初期化</button>
-        </div>
-      </div>
-
-      <div class="footerSpace"></div>
-    </div>
-  </div>
+<section class="hit-rate">
+  全体的中率：<b id="all">0%</b> /
+  神戸：<b id="kobe">0%</b> /
+  田代：<b id="tashiro">0%</b>
+</section>
 
 <script>
-/**
- * 壊れにくい設計ポイント
- * - HTMLは1枚、JSは「状態→描画→計算」を関数で分離
- * - すべての入力は localStorage に保存（ページ更新でも保持）
- * - idは i（配列index）で一意、イベントはまとめて監視（イベント委譲）
- * - NaN防止（0件は0%）
- */
+const STORAGE_KEY = "rizin_results";
 
-const STORAGE_KEY = "rizin_actual_v1";
-
-// 試合データ（予想は固定：神戸(k) / 田代(t)）
 const matches = [
-  {no:15, k:"ラジャブアリ・シェイドゥラエフ", t:"朝倉未来"},
-  {no:14, k:"イルホム・ノジモフ", t:"ホベルト・サトシ・ソウザ"},
-  {no:13, k:"扇久保博正", t:"元谷友貴"},
-  {no:12, k:"井上直樹", t:"ダニー・サバテロ"},
-  {no:11, k:"RENA", t:"伊澤星花"},
-  {no:10, k:"サガール・ケラモフ", t:"クレベル・コイケ"},
-  {no:8,  k:"安藤達也", t:"福田龍彌"},
-  {no:7,  k:"新居すぐる", t:"秋元強真"},
-  {no:6,  k:"久保優太", t:"カルシャガ・ダウトベック"},
-  {no:5,  k:"神龍誠", t:"ヒロヤ"},
-  {no:4,  k:"後藤丈治", t:"ホセ・トーレス"},
-  {no:3,  k:"冨澤大智", t:"篠塚辰樹"},
-  {no:2,  k:"雑賀ヤン坊達也", t:"ベイノア・イブラヒム"},
-  {no:1,  k:"芦澤竜誠", t:"ジョリー"},
-  {no:0,  k:"須田健律", t:"ヤマト・エンゾ・マキ"},
+  { id: 1, kobe: "選手A", tashiro: "選手B" },
+  { id: 2, kobe: "選手C", tashiro: "選手D" }
 ];
 
-// ===== State =====
-function loadState(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const obj = raw ? JSON.parse(raw) : {};
-    return (obj && typeof obj === "object") ? obj : {};
-  }catch{
-    return {};
-  }
-}
-function saveState(state){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-let state = loadState();
+const app = document.getElementById("app");
+let results = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 
-// ===== Utils =====
-function yen(n){
-  return Number(n||0).toLocaleString("ja-JP");
-}
-function safeRate(numer, denom){
-  if(!denom) return 0;
-  return Math.round((numer/denom)*100);
-}
-function basePoint(method){
-  if(method === "判定") return 500;
-  if(method === "KO" || method === "一本") return 1000;
-  return 0;
-}
-function isDecided(entry){
-  return entry && entry.winner && entry.method;
-}
+matches.forEach(m => {
+  const div = document.createElement("div");
+  div.className = "match";
 
-// ===== Render =====
-const container = document.getElementById("matches");
+  div.innerHTML = `
+    <div class="names">
+      <span>神戸：${m.kobe}</span>
+      <span>田代：${m.tashiro}</span>
+    </div>
+    <select data-id="${m.id}">
+      <option value="">結果未入力</option>
+      <option value="${m.kobe}">${m.kobe}</option>
+      <option value="${m.tashiro}">${m.tashiro}</option>
+    </select>
+  `;
 
-function renderMatches(){
-  container.innerHTML = "";
-  matches.forEach((m,i)=>{
-    const entry = state[i] || {};
-    const titleEligible = m.no >= 11;
-
-    const div = document.createElement("div");
-    div.className = "match";
-    div.dataset.index = String(i);
-
-    div.innerHTML = `
-      <div class="matchHeader">
-        <div class="matchNo">第${m.no}試合</div>
-        ${titleEligible ? `<div class="badge">TITLE ELIGIBLE</div>` : ``}
-      </div>
-
-      <div class="predictions">
-        <div class="pred kobe">
-          <div class="predLabel">神戸 予想</div>
-          <div class="predName">${m.k}</div>
-        </div>
-        <div class="pred tashiro">
-          <div class="predLabel">田代 予想</div>
-          <div class="predName">${m.t}</div>
-        </div>
-      </div>
-
-      <div class="inputs">
-        <div>
-          <label>結果：勝者</label>
-          <select data-field="winner">
-            <option value="">未選択</option>
-            <option value="${m.k}" ${entry.winner===m.k?"selected":""}>${m.k}</option>
-            <option value="${m.t}" ${entry.winner===m.t?"selected":""}>${m.t}</option>
-          </select>
-        </div>
-
-        <div>
-          <label>結果：勝ち方</label>
-          <select data-field="method">
-            <option value="">未選択</option>
-            <option value="判定" ${entry.method==="判定"?"selected":""}>判定</option>
-            <option value="KO" ${entry.method==="KO"?"selected":""}>KO</option>
-            <option value="一本" ${entry.method==="一本"?"selected":""}>一本</option>
-          </select>
-        </div>
-      </div>
-
-      ${titleEligible ? `
-        <label class="titleToggle">
-          <input type="checkbox" data-field="title" ${entry.title ? "checked":""}/>
-          <div>
-            <div style="font-weight:900;">タイトルマッチ（獲得ポイント2倍）</div>
-            <small>※第11試合以降のみ有効</small>
-          </div>
-        </label>
-      ` : ``}
-
-      <div class="rowScore">
-        <span>神戸：<b id="rowK${i}">0</b>円</span>
-        <span>田代：<b id="rowT${i}">0</b>円</span>
-      </div>
-    `;
-    container.appendChild(div);
-  });
-}
-
-// ===== Calculate & Update UI =====
-function calculateAndUpdate(){
-  let totalK=0, totalT=0;
-  let decided=0;
-  let hitK=0, hitT=0;
-
-  matches.forEach((m,i)=>{
-    const entry = state[i] || {};
-    let point = 0;
-
-    if(isDecided(entry)){
-      decided++;
-      point = basePoint(entry.method);
-
-      // タイトルマッチ 2倍（11試合目以降のみ）
-      if(entry.title && m.no >= 11){
-        point *= 2;
-      }
-    }
-
-    const kPoint = (entry.winner === m.k) ? point : 0;
-    const tPoint = (entry.winner === m.t) ? point : 0;
-
-    // 行表示
-    const rowK = document.getElementById(`rowK${i}`);
-    const rowT = document.getElementById(`rowT${i}`);
-    if(rowK) rowK.textContent = yen(kPoint);
-    if(rowT) rowT.textContent = yen(tPoint);
-
-    totalK += kPoint;
-    totalT += tPoint;
-
-    if(isDecided(entry)){
-      if(entry.winner === m.k) hitK++;
-      if(entry.winner === m.t) hitT++;
-    }
+  const select = div.querySelector("select");
+  select.value = results[m.id] || "";
+  select.addEventListener("change", e => {
+    results[m.id] = e.target.value;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
+    updateRate();
   });
 
-  // 合計
-  document.getElementById("totalKobe").textContent = yen(totalK);
-  document.getElementById("totalTashiro").textContent = yen(totalT);
+  app.appendChild(div);
+});
 
-  // リード表示
-  const lead = document.getElementById("leadText");
-  const diff = Math.abs(totalK - totalT);
-  if(totalK > totalT){
-    lead.innerHTML = `<span class="who">神戸</span> が <span class="amt">${yen(diff)}円</span> リード`;
-  }else if(totalT > totalK){
-    lead.innerHTML = `<span class="who">田代</span> が <span class="amt">${yen(diff)}円</span> リード`;
-  }else{
-    lead.textContent = "引き分け";
-  }
+function updateRate() {
+  let total = 0, hitK = 0, hitT = 0;
 
-  // 的中率（0件は0%）
-  const rateK = safeRate(hitK, decided);
-  const rateT = safeRate(hitT, decided);
-  const rateAll = safeRate(hitK + hitT, decided * 2); // 平均（2人分）
+  matches.forEach(m => {
+    const r = results[m.id];
+    if (!r) return;
+    total++;
+    if (r === m.kobe) hitK++;
+    if (r === m.tashiro) hitT++;
+  });
 
-  document.getElementById("hitKobe").textContent = `${rateK}%`;
-  document.getElementById("hitTashiro").textContent = `${rateT}%`;
-  document.getElementById("hitAll").textContent = `${rateAll}%`;
-  document.getElementById("decidedCount").textContent = String(decided);
+  const rate = (h, t) => t === 0 ? "0%" : Math.round(h / t * 100) + "%";
+
+  document.getElementById("kobe").textContent = rate(hitK, total);
+  document.getElementById("tashiro").textContent = rate(hitT, total);
+  document.getElementById("all").textContent = rate(hitK + hitT, total * 2);
 }
 
-// ===== Events (event delegation) =====
-container.addEventListener("change", (e)=>{
-  const target = e.target;
-  if(!target) return;
-
-  const matchEl = target.closest(".match");
-  if(!matchEl) return;
-
-  const i = Number(matchEl.dataset.index);
-  if(Number.isNaN(i)) return;
-
-  const field = target.dataset.field;
-  if(!field) return;
-
-  const current = state[i] || {};
-
-  if(field === "title"){
-    current.title = !!target.checked;
-  }else{
-    current[field] = target.value;
-  }
-
-  // タイトル対象外の試合に title が入らないよう保護
-  if(matches[i].no < 11){
-    current.title = false;
-  }
-
-  state[i] = current;
-  saveState(state);
-  calculateAndUpdate();
-});
-
-// ===== Buttons =====
-document.getElementById("btnReset").addEventListener("click", ()=>{
-  const ok = confirm("全ての結果データを削除します。本当に実行しますか？");
-  if(!ok) return;
-  localStorage.removeItem(STORAGE_KEY);
-  state = loadState();
-  renderMatches();
-  calculateAndUpdate();
-});
-
-document.getElementById("btnCopy").addEventListener("click", async ()=>{
-  // そのままIssueやClaudeに貼れる形
-  const payload = {
-    storageKey: STORAGE_KEY,
-    updatedAt: new Date().toISOString(),
-    decidedMatches: Object.values(state).filter(isDecided).length,
-    data: state,
-  };
-  const text = JSON.stringify(payload, null, 2);
-
-  try{
-    await navigator.clipboard.writeText(text);
-    alert("結果データをコピーしました（クリップボード）");
-  }catch{
-    // clipboardが使えない環境用：promptに出す
-    prompt("コピーできない環境です。以下を手動でコピーしてください。", text);
-  }
-});
-
-// ===== Init =====
-renderMatches();
-calculateAndUpdate();
+updateRate();
 </script>
+
 </body>
 </html>
