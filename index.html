@@ -330,7 +330,13 @@
         <div class="total-value"><span id="totalTashiro">0</span> 円</div>
       </div>
     </div>
+
     <div class="difference" id="difference">引き分け</div>
+
+    <!-- 勝率/的中率（ここに表示されます） -->
+    <div id="winRate" class="difference" style="margin-top:10px;">
+      勝率 / 的中率：0%
+    </div>
   </div>
 </div>
 
@@ -358,16 +364,15 @@ const container = document.getElementById("matches");
 matches.forEach((m,i)=>{
   const div = document.createElement("div");
   div.className = "match";
-  
-  // 11試合目以降かどうかをチェック
+
   const isTitleEligible = m.no >= 11;
-  
+
   div.innerHTML = `
     <div class="match-header">
       <div class="match-number">第${m.no}試合</div>
       ${isTitleEligible ? '<div class="title-badge">TITLE ELIGIBLE</div>' : ''}
     </div>
-    
+
     <div class="predictions">
       <div class="prediction kobe">
         <div class="prediction-label">神戸 予想</div>
@@ -435,8 +440,7 @@ function calculate(){
 
     if(method==="判定") base = 500;
     if(method==="KO" || method==="一本") base = 1000;
-    
-    // 11試合目以降のみタイトルマッチ2倍適用
+
     if(isTitle && m.no >= 11) base *= 2;
 
     let ks = 0, ts = 0;
@@ -452,11 +456,10 @@ function calculate(){
 
   document.getElementById("totalKobe").textContent = totalK;
   document.getElementById("totalTashiro").textContent = totalT;
-  
-  // 差額を計算して表示
+
   const diff = Math.abs(totalK - totalT);
   const diffElement = document.getElementById("difference");
-  
+
   if (totalK > totalT) {
     diffElement.innerHTML = `<span class="winner">神戸</span> が <span class="amount">${diff.toLocaleString()}円</span> リード`;
   } else if (totalT > totalK) {
@@ -466,7 +469,7 @@ function calculate(){
   }
 }
 </script>
- 
+
 <section style="max-width:600px;margin:40px auto;padding:20px;border-top:2px solid #eee;">
   <h2 style="margin-bottom:12px;">結果入力</h2>
 
@@ -490,6 +493,7 @@ function calculate(){
 </section>
 
 <script>
+  // ===== 結果入力（localStorage）=====
   const STORAGE_KEY = "rizin_results";
   let results = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
@@ -517,164 +521,46 @@ function calculate(){
     results.push({ result, bet, amount });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
     render();
+    updateWinRate(); // 追加後に勝率も更新
   }
 
   render();
 </script>
+
 <script>
-(function () {
-  // ===== 設定 =====
-  const STORAGE_KEY = 'rizin_results';
+  // ===== 勝率 / 的中率（下部に表示）=====
+  function updateWinRate() {
+    const el = document.getElementById('winRate');
+    if (!el) return;
 
-  // 表示を差し込む基準（合計収支の近くに入れる）
-  // 既存の合計収支表示の要素ID/クラスがある場合は、ここを合わせてください
-  // 見つからなければ body の最後に追加します
-  const INSERT_AFTER_SELECTOR = '#total-profit, .total-profit';
+    const raw = localStorage.getItem('rizin_results');
+    if (!raw) {
+      el.textContent = '勝率 / 的中率：0%';
+      return;
+    }
 
-  function safeParseJSON(value) {
+    let arr;
     try {
-      return JSON.parse(value);
-    } catch (e) {
-      return [];
+      arr = JSON.parse(raw);
+    } catch {
+      el.textContent = '勝率 / 的中率：0%';
+      return;
     }
-  }
 
-  function calcWinRate(results) {
-    const total = results.length;
-    if (!total) return 0;
-
-    // 勝ち判定：
-    // 既存データに合わせて、以下のどれかで true を拾う設計
-    // - result.win === true
-    // - result.result === 'win'
-    // - result.isWin === true
-    const wins = results.filter(r =>
-      r?.win === true ||
-      r?.isWin === true ||
-      r?.result === 'win'
-    ).length;
-
-    return Math.round((wins / total) * 100);
-  }
-
-  function renderWinRate(rate, total) {
-    const el = document.createElement('div');
-    el.id = 'win-rate-box';
-    el.style.marginTop = '8px';
-    el.style.fontWeight = 'bold';
-    el.style.color = '#333';
-    el.innerHTML = `勝率 / 的中率： <span style="color:#E30613">${rate}%</span>（${total}件）`;
-    return el;
-  }
-
-  function insertAfterTarget(node) {
-    const target = document.querySelector(INSERT_AFTER_SELECTOR);
-    if (target && target.parentNode) {
-      target.parentNode.insertBefore(node, target.nextSibling);
-    } else {
-      document.body.appendChild(node);
+    if (!Array.isArray(arr) || arr.length === 0) {
+      el.textContent = '勝率 / 的中率：0%';
+      return;
     }
+
+    const total = arr.length;
+    const wins = arr.filter(x => x && x.result === 'win').length;
+    const rate = Math.round((wins / total) * 100);
+
+    el.innerHTML = `勝率 / 的中率：<span class="amount">${rate}%</span>`;
   }
 
-  // ===== 実行 =====
-  const raw = localStorage.getItem(STORAGE_KEY);
-  const results = Array.isArray(raw) ? raw : safeParseJSON(raw || '[]');
-
-  const total = results.length;
-  const rate = calcWinRate(results);
-
-  // 既に表示があれば二重に出さない
-  if (!document.getElementById('win-rate-box')) {
-    insertAfterTarget(renderWinRate(rate, total));
-  }
-})();
-</script>
-<script>
-(function () {
-  const STORAGE_KEY = 'rizin_results';
-
-  function safeParseJSON(value) {
-    try {
-      return JSON.parse(value);
-    } catch (e) {
-      return [];
-    }
-  }
-
-  const raw = localStorage.getItem(STORAGE_KEY);
-  const results = safeParseJSON(raw || '[]');
-
-  const total = results.length;
-  const wins = results.filter(r =>
-    r?.win === true ||
-    r?.isWin === true ||
-    r?.result === 'win'
-  ).length;
-
-  const rate = total === 0 ? 0 : Math.round((wins / total) * 100);
-
-  // ===== 強制表示（画面右下・固定）=====
-  const box = document.createElement('div');
-  box.id = 'win-rate-box';
-  box.style.position = 'fixed';
-  box.style.right = '16px';
-  box.style.bottom = '16px';
-  box.style.background = '#fff';
-  box.style.border = '2px solid #E30613';
-  box.style.padding = '10px 14px';
-  box.style.borderRadius = '8px';
-  box.style.fontWeight = 'bold';
-  box.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-  box.style.zIndex = '9999';
-  box.innerHTML = `
-    勝率 / 的中率： 
-    <span style="color:#E30613">${rate}%</span>
-    <div style="font-size:12px; margin-top:4px;">（${wins} / ${total} 件）</div>
-  `;
-
-  document.body.appendChild(box);
-})();
-</script>
-<script>
-(function () {
-  const STORAGE_KEY = 'rizin_results';
-
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return;
-
-  let results;
-  try {
-    results = JSON.parse(raw);
-  } catch {
-    return;
-  }
-
-  if (!Array.isArray(results)) return;
-
-  const total = results.length;
-  const wins = results.filter(r => r.result === 'win').length;
-  const rate = total === 0 ? 0 : Math.round((wins / total) * 100);
-
-  const box = document.createElement('div');
-  box.style.position = 'fixed';
-  box.style.right = '16px';
-  box.style.bottom = '16px';
-  box.style.background = '#fff';
-  box.style.border = '2px solid #E30613';
-  box.style.padding = '10px 14px';
-  box.style.borderRadius = '8px';
-  box.style.fontWeight = 'bold';
-  box.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-  box.style.zIndex = '9999';
-
-  box.innerHTML = `
-    勝率 / 的中率：
-    <span style="color:#E30613">${rate}%</span>
-    <div style="font-size:12px;">（${wins} / ${total} 件）</div>
-  `;
-
-  document.body.appendChild(box);
-})();
+  // 初期表示（ページ読み込み時）
+  updateWinRate();
 </script>
 
 </body>
