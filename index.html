@@ -131,36 +131,43 @@ h1{
 }
 .prediction.winner::before{opacity:1;}
 
-/* 選手アイコン - 実際の画像表示 */
-.fighter-icon{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:10px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.2);
-  border:3px solid #fff;
-  position:relative;
-  overflow:hidden;
-  background:#f0f0f0;
-}
-.fighter-icon img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:50%;
-}
-.fighter-icon.kobe{
-  border-color:#00D4FF;
-  box-shadow:0 4px 16px rgba(0,212,255,0.4);
-}
-.fighter-icon.tashiro{
-  border-color:#FFD700;
-  box-shadow:0 4px 16px rgba(255,215,0,0.4);
-}
-
+const fighterImages = {
+  // タイトルマッチ（第11-15試合）
+  "ラジャブアリ・シェイドゥラエフ": "https://picsum.photos/seed/shaydullaev/200",
+  "朝倉未来": "https://picsum.photos/seed/asakura/200",
+  "ホベルト・サトシ・ソウザ": "https://picsum.photos/seed/satoshi/200",
+  "イルホム・ノジモフ": "https://picsum.photos/seed/nozimov/200",
+  "伊澤星花": "https://picsum.photos/seed/izawa/200",
+  "RENA": "https://picsum.photos/seed/rena/200",
+  "井上直樹": "https://picsum.photos/seed/inoue/200",
+  "ダニー・サバテロ": "https://picsum.photos/seed/sabatello/200",
+  "扇久保博正": "https://picsum.photos/seed/ogikubo/200",
+  "元谷友貴": "https://picsum.photos/seed/motoya/200",
+  
+  // 第6-10試合
+  "クレベル・コイケ": "https://picsum.photos/seed/kleber/200",
+  "ヴガール・ケラモフ": "https://picsum.photos/seed/keramov/200",
+  "福田龍彌": "https://picsum.photos/seed/fukuda/200",
+  "安藤達也": "https://picsum.photos/seed/ando/200",
+  "神龍誠": "https://picsum.photos/seed/shinryu/200",
+  "ヒロヤ": "https://picsum.photos/seed/hiroya/200",
+  "カルシャガ・ダウトベック": "https://picsum.photos/seed/dautbek/200",
+  "久保優太": "https://picsum.photos/seed/kubo/200",
+  "秋元強真": "https://picsum.photos/seed/akimoto/200",
+  "新居すぐる": "https://picsum.photos/seed/nii/200",
+  
+  // 第1-5試合
+  "後藤丈治": "https://picsum.photos/seed/goto/200",
+  "ホセ・トーレス": "https://picsum.photos/seed/torres/200",
+  "雑賀ヤン坊達也": "https://picsum.photos/seed/saiga/200",
+  "ブラックパンサー ベイノア": "https://picsum.photos/seed/beinoa/200",
+  "篠塚辰樹": "https://picsum.photos/seed/shinozuka/200",
+  "冨澤大智": "https://picsum.photos/seed/tomizawa/200",
+  "芦澤竜誠": "https://picsum.photos/seed/ashizawa/200",
+  "ジョリー": "https://picsum.photos/seed/joly/200",
+  "須田雄律": "https://picsum.photos/seed/suda/200",
+  "ヤマザト・エンゾ・マサミ": "https://picsum.photos/seed/yamazato/200"
+};
 .prediction-label{
   font-size:10px;color:#999;margin-bottom:6px;
   text-transform:uppercase;letter-spacing:1px;font-weight:600;
